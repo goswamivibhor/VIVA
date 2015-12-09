@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Viva</string>
+    <!-- Dashboard -->
+    <string name="dashboard_welcome_message">Hey there.. Welcome to your personal digital assistant
+        application.\nVIVA will allow you to turn your phone into a powerful assistant that listens to
+        all your notifications like emails, messages, push messages, etc.\nShe also is able to handle
+        voice calls and can act as a voice recorder. She can monitor your health and can suggest important changes.\n
+    She is your friend and will be available for you both offline and online.</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+</resources>
