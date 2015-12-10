@@ -9,26 +9,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.govibs.viva.SplashScreenActivity">
 
-    <LinearLayout
-        android:id="@+id/llSplashScreenView"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvSplashScreenWelcomeMessage"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="44sp"
         android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:textAllCaps="true"
+        android:textStyle="bold|italic"
+        android:textColor="@android:color/holo_blue_dark"
+        android:text="@string/app_name" />
 
-        <TextView
-            android:id="@+id/tvSplashScreenWelcomeMessage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="44sp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:textAllCaps="true"
-            android:textStyle="bold|italic"
-            android:textColor="@android:color/holo_blue_dark"
-            android:text="@string/app_name" />
+    <TextView
+        android:id="@+id/tvSplashScreenInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenWelcomeMessage"
+        android:text="@string/status_init"
+        android:textStyle="italic"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
 
-    </LinearLayout>
+
 
 
 </RelativeLayout>

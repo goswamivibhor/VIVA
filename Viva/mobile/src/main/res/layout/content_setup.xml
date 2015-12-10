@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.govibs.viva.SetupActivity"
+    tools:showIn="@layout/activity_setup">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <TextView
+            android:id="@+id/tvSetupName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/question_name"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textSize="18sp"/>
+        <EditText
+            android:id="@+id/etSetupName"
+            android:labelFor="@+id/etSetupName"
+            android:inputType="textPersonName"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSetupName"/>
+
+        <TextView
+            android:id="@+id/tvSetupGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/question_gender"
+            android:layout_below="@+id/etSetupName"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp" />
+
+        <RadioGroup
+            android:id="@+id/rgrpGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSetupGender"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp">
+
+            <RadioButton
+                android:id="@+id/radioBtnMale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_male"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_female"/>
+
+            <RadioButton
+                android:id="@+id/radioBtnDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/answer_call_by_name"/>
+
+        </RadioGroup>
+
+        <Switch
+            android:id="@+id/switchSetupNotification"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/rgrpGender"
+            android:layout_alignParentStart="true"
+            android:layout_height="wrap_content"
+            android:text="@string/question_notification"
+            android:textOff="@string/answer_notification_disable"
+            android:textOn="@string/answer_notification_enable"/>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

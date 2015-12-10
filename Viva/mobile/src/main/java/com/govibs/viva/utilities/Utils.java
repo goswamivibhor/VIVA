@@ -1,5 +1,8 @@
 package com.govibs.viva.utilities;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -78,4 +81,52 @@ public class Utils {
         view.setVisibility(View.VISIBLE);
         view.startAnimation(slide);
     }
+
+
+    /**
+     * Show dialog with a button
+     * @param context - the calling application context
+     * @param message - the message of the dialog
+     * @param buttonText - the button text.
+     * @param onClickListener - the on click listener.
+     */
+    public static void showDialogWithButton(Context context, String message, String buttonText, DialogInterface.OnClickListener onClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(message);
+        builder.setPositiveButton(buttonText, onClickListener);
+        builder.create().show();
+    }
+
+    /**
+     * Show dialog with a button
+     * @param context - the calling application context.
+     * @param message - the message of the dialog.
+     * @param positiveButtonText - the text for positive button.
+     * @param positiveButtonOnClickListener - the on click listener for positive button.
+     * @param negativeButtonText - the text for negative button.
+     * @param negativeButtonOnClickListener - the on click listener for negative button.
+     */
+    public static void showDialogWithButton(Context context, String message, String positiveButtonText,
+                                            DialogInterface.OnClickListener positiveButtonOnClickListener,
+                                            String negativeButtonText,
+                                            DialogInterface.OnClickListener negativeButtonOnClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(message);
+        builder.setPositiveButton(positiveButtonText, positiveButtonOnClickListener);
+        builder.setNegativeButton(negativeButtonText, negativeButtonOnClickListener);
+        builder.create().show();
+    }
+
+    /**
+     * Show dialog
+     * @param context - the calling application context
+     * @param message - the message of the dialog
+     */
+    public static void showDialog(Context context, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(message);
+        builder.create().show();
+    }
+
+
 }

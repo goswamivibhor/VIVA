@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hey_there">Hi!</string>
+    <string name="lets_get_started">Let\'s get started!</string>
+    <string name="lets_begin">Let\'s begin!</string>
+    <string name="status_init">Initializing&#8230;</string>
+    <string name="voice_over_option_setup">Do you want me to ask you some questions aloud?</string>
+    <string name="question_name">What should I call you?</string>
+    <string name="question_gender">Can I know your gender?</string>
+    <string name="question_notification">Can I speak if notifications such as email, messages, etc arrive?</string>
+    <string name="answer_male">Male</string>
+    <string name="answer_female">Female</string>
+    <string name="answer_call_by_name">Call you by your name</string>
+    <string name="call_sir">Sir</string>
+    <string name="call_mam">Ma\'am</string>
+    <string name="answer_notification_enable">Yes</string>
+    <string name="answer_notification_disable">No</string>
+    <string name="failed_setup">I was not able to understand who you are and what would I call you. So, I\'m going to go with the basics of my programming.</string>
+</resources>

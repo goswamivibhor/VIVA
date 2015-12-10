@@ -19,6 +19,7 @@
         android:text="@string/dashboard_welcome_message"
         android:textStyle="italic"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:textSize="16sp"/>
 
 </RelativeLayout>

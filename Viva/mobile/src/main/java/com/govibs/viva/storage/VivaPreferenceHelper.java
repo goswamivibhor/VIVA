@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 public class VivaPreferenceHelper {
 
     private static final String FirstTimeLaunch = "FirstTimeLaunch";
+    private static final String Setup = "VivaSetup";
 
     private VivaPreferenceHelper() {
     }
@@ -30,6 +31,14 @@ public class VivaPreferenceHelper {
 
     public static boolean isFirstTimeLaunch(Context context) {
         return getPreferences(context).getBoolean(FirstTimeLaunch, true);
+    }
+
+    public static void setSetupComplete(Context context, boolean status) {
+        getPreferences(context).edit().putBoolean(Setup, status).apply();
+    }
+
+    public static boolean isSetupComplete(Context context) {
+        return getPreferences(context).getBoolean(Setup, false);
     }
 
 }
