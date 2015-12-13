@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Viva</string>
+    <string name="splash_screen_anim_v">V</string>
+    <string name="splash_screen_anim_i">I</string>
+    <string name="splash_screen_anim_a">A</string>
     <!-- Dashboard -->
     <string name="dashboard_welcome_message">
         "Hi there.. My name is VIVA and I'm your personal digital assistant application.\n"

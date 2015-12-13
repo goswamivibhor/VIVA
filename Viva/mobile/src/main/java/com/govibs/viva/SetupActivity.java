@@ -8,7 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.govibs.viva.storage.VivaPreferenceHelper;
 
 public class SetupActivity extends AppCompatActivity implements View.OnFocusChangeListener {
 
@@ -16,6 +19,7 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
 
     private boolean isSetupVoiceOver;
     private EditText etSetupName;
+    private RadioGroup radioGroupCallSign;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,7 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
         isSetupVoiceOver = getIntent().getBooleanExtra(SETUP_VOICE_OVER, true);
         etSetupName = (EditText) findViewById(R.id.etSetupName);
         etSetupName.setOnFocusChangeListener(this);
+        radioGroupCallSign = (RadioGroup) findViewById(R.id.rgrpGender);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +64,7 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
      */
     private void validate() {
         if (etSetupName.getEditableText() != null && etSetupName.getEditableText().length() > 0) {
+            VivaPreferenceHelper.setCallSign(SetupActivity.this, getCallSign());
             setResult(RESULT_OK);
             finish();
         } else {
@@ -76,5 +82,17 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
      */
     private void speak(int resource) {
         VivaHandler.getInstance().speak(SetupActivity.this, getString(resource));
+    }
+
+    private String getCallSign() {
+        switch (radioGroupCallSign.getCheckedRadioButtonId()) {
+            case R.id.radioBtnMale:
+                return getString(R.string.answer_male);
+            case R.id.radioBtnFemale:
+                return getString(R.string.answer_female);
+            case R.id.radioBtnDefault:
+            default:
+                return etSetupName.getEditableText().toString();
+        }
     }
 }

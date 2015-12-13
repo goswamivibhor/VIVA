@@ -2,21 +2,30 @@ package com.govibs.viva;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.govibs.iriscorelibrary.global.Global;
 import com.govibs.viva.storage.VivaPreferenceHelper;
 import com.govibs.viva.utilities.Utils;
+import com.pascalwelsch.holocircularprogressbar.HoloCircularProgressBar;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FloatingActionButton mFloatingActionButton;
     private static final int REQUEST_SETUP = 1;
+    private TextView tvInfoMessage, tvDashboardWeatherInfo;
+    private RelativeLayout rlConfiguredDashboard;
+    private HoloCircularProgressBar holoCircularProgressBarBattery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +36,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         mFloatingActionButton.setOnClickListener(this);
+        tvInfoMessage = (TextView) findViewById(R.id.tvInfoMessage);
+        rlConfiguredDashboard = (RelativeLayout) findViewById(R.id.rlConfiguredDashboard);
+        holoCircularProgressBarBattery = (HoloCircularProgressBar) findViewById(R.id.holoCircularProgressBar);
+        holoCircularProgressBarBattery.setOnClickListener(this);
+        tvDashboardWeatherInfo = (TextView) findViewById(R.id.tvDashboardWeatherInfo);
     }
 
     @Override
@@ -36,21 +50,42 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void run() {
                 if (VivaPreferenceHelper.isFirstTimeLaunch(DashboardActivity.this)) {
-                    VivaHandler.getInstance().speak(DashboardActivity.this, getString(R.string.dashboard_welcome_message));
+                    VivaHandler.getInstance().speak(DashboardActivity.this, getString(R.string.hey_there));
                     mFloatingActionButton.setTag("Start");
                     VivaPreferenceHelper.setFirstTimeLaunch(DashboardActivity.this, false);
                 }
+                String info = VivaHandler.getInstance().getWeatherInformation(DashboardActivity.this);
+                if (!info.equalsIgnoreCase(getString(R.string.weather_info_default))) {
+                    tvDashboardWeatherInfo.setText(info);
+                } else {
+                    tvDashboardWeatherInfo.setText(R.string.weather_info_default_display);
+                }
             }
         }, 2000);
-
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        VivaHandler.getInstance().shutdown(this);
+        finish();
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
                 performSetup(v);
+                break;
+            case R.id.holoCircularProgressBar:
+                speakBatteryStatus();
+                break;
+            case R.id.tvDashboardWeatherInfo:
+                VivaHandler.getInstance().getWeatherInformationToSpeak(this);
                 break;
         }
     }
@@ -61,7 +96,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         switch (requestCode) {
             case REQUEST_SETUP:
                 if (resultCode == RESULT_OK) {
+                    tvInfoMessage.setVisibility(View.GONE);
+                    rlConfiguredDashboard.setVisibility(View.VISIBLE);
                     VivaPreferenceHelper.setSetupComplete(DashboardActivity.this, true);
+                    holoCircularProgressBarBattery.setProgress(
+                            VivaHandler.getInstance().getBatteryPercentage(DashboardActivity.this));
                 } else {
                     VivaHandler.getInstance().speak(DashboardActivity.this, getString(R.string.failed_setup));
                     VivaPreferenceHelper.setSetupComplete(DashboardActivity.this, false);
@@ -97,5 +136,15 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Speak", null).show();
         }
+    }
+
+    /**
+     * Speak the battery status.
+     */
+    private void speakBatteryStatus() {
+        String batteryStatus = VivaPreferenceHelper.getCallSign(DashboardActivity.this) + getString(R.string.battery_string_part_1)
+                + (int) holoCircularProgressBarBattery.getProgress() + getString(R.string.battery_string_part_2);
+        Log.i(Global.TAG, batteryStatus);
+        VivaHandler.getInstance().speak(DashboardActivity.this, batteryStatus);
     }
 }

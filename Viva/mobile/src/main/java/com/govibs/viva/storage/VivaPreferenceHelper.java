@@ -12,6 +12,7 @@ public class VivaPreferenceHelper {
 
     private static final String FirstTimeLaunch = "FirstTimeLaunch";
     private static final String Setup = "VivaSetup";
+    private static final String CallSign = "VivaCallSign";
 
     private VivaPreferenceHelper() {
     }
@@ -39,6 +40,14 @@ public class VivaPreferenceHelper {
 
     public static boolean isSetupComplete(Context context) {
         return getPreferences(context).getBoolean(Setup, false);
+    }
+
+    public static void setCallSign(Context context, String callSign) {
+        getPreferences(context).edit().putString(CallSign, callSign).apply();
+    }
+
+    public static String getCallSign(Context context) {
+        return getPreferences(context).getString(CallSign, "Sir");
     }
 
 }

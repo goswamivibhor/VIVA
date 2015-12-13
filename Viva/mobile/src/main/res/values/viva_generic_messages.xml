@@ -15,5 +15,16 @@
     <string name="call_mam">Ma\'am</string>
     <string name="answer_notification_enable">Yes</string>
     <string name="answer_notification_disable">No</string>
-    <string name="failed_setup">I was not able to understand who you are and what would I call you. So, I\'m going to go with the basics of my programming.</string>
+    <string name="failed_setup">Sir, I was not able to understand what to call you.</string>
+    <string name="battery_string_part_1">, battery is </string>
+    <string name="battery_string_part_2"> percent</string>
+    <string name="weather_info_default">, I don\'t have any information on the weather. Will update you as soon as I have it.</string>
+    <string name="weather_info_default_display">Weather information unavailable</string>
+    <string-array name="command_list">
+        <item>Battery</item>
+        <item>Call</item>
+        <item>Weather</item>
+        <item>Take a note</item>
+        <item>Alarm</item>
+    </string-array>
 </resources>

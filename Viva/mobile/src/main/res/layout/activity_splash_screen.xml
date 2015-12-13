@@ -13,12 +13,13 @@
         android:id="@+id/tvSplashScreenWelcomeMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="44sp"
         android:layout_centerInParent="true"
+        android:textSize="44sp"
         android:textAllCaps="true"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         android:textColor="@android:color/holo_blue_dark"
-        android:text="@string/app_name" />
+        android:text="@string/app_name"/>
+
 
     <TextView
         android:id="@+id/tvSplashScreenInfo"
@@ -29,8 +30,5 @@
         android:textStyle="italic"
         android:layout_centerHorizontal="true"
         android:visibility="gone"/>
-
-
-
 
 </RelativeLayout>

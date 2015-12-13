@@ -1,10 +1,14 @@
 package com.govibs.viva;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.govibs.iriscorelibrary.VivaManager;
 import com.govibs.iriscorelibrary.handler.VivaManagerHandler;
+import com.govibs.iriscorelibrary.storage.IrisPreferenceHelper;
+import com.govibs.viva.storage.VivaPreferenceHelper;
 
 /**
  * This is the handler class for managing communication with the library.
@@ -24,8 +28,8 @@ public class VivaHandler implements VivaManagerHandler {
     }
 
     @Override
-    public void initialize(Context context) {
-        VivaManager.getInstance().initialize(context, this);
+    public void initialize(Activity activity, Context context) {
+        VivaManager.getInstance().initialize(activity, context, this);
     }
 
     @Override
@@ -44,7 +48,7 @@ public class VivaHandler implements VivaManagerHandler {
 
     @Override
     public void shutdown(Context context) {
-
+        VivaManager.getInstance().shutdown(context);
     }
 
     @Override
@@ -65,5 +69,37 @@ public class VivaHandler implements VivaManagerHandler {
     @Override
     public void sayToViva(Context context, String s) {
         VivaManager.getInstance().sayToViva(context, s);
+    }
+
+    @Override
+    public float getBatteryPercentage(Context context) {
+        return VivaManager.getInstance().getBatteryPercentage(context);
+    }
+
+    @Override
+    public String getWeatherInformation(Context context) {
+        String info = "Temperature: " + IrisPreferenceHelper.getVivaCurrentTemp(context) + " degree Celcius\n"
+                + "Wind Speed: " + IrisPreferenceHelper.getVivaCurrentSpeed(context) + "Miles Per Hour\n"
+                + "Other Info: " + IrisPreferenceHelper.getVivaCurrentWeatherState(context);
+        if (!TextUtils.isEmpty(info)) {
+            return info;
+        } else {
+            return context.getString(R.string.weather_info_default_display);
+        }
+    }
+
+    /**
+     * Weather information to speak.
+     * @param context - the calling application context
+     * @return Weather information.
+     */
+    public String getWeatherInformationToSpeak(Context context) {
+        String info = VivaManager.getInstance().getWeatherInformation(context);
+        if (!TextUtils.isEmpty(info)) {
+            return info;
+        } else {
+            return VivaPreferenceHelper.getCallSign(context) +
+                    context.getString(R.string.weather_info_default);
+        }
     }
 }
