@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.govibs.iriscorelibrary.VivaManager;
+import com.govibs.iriscorelibrary.ai.VivaAIManager;
 import com.govibs.iriscorelibrary.handler.VivaManagerHandler;
 import com.govibs.iriscorelibrary.storage.IrisPreferenceHelper;
 import com.govibs.viva.storage.VivaPreferenceHelper;
@@ -18,6 +19,7 @@ public class VivaHandler implements VivaManagerHandler {
 
     public static final String ACTION_INITIALIZE = "VivaInitialize";
     public static final String INIT_STATUS = "VivaInitStatus";
+    public static final int VIVA_VOICE_RECOGNITION_REQUEST = 2403;
 
     private static VivaHandler mVivaHandler = new VivaHandler();
 
@@ -101,5 +103,9 @@ public class VivaHandler implements VivaManagerHandler {
             return VivaPreferenceHelper.getCallSign(context) +
                     context.getString(R.string.weather_info_default);
         }
+    }
+
+    public Intent startListening(Context context) {
+        return VivaAIManager.getInstance().getVoiceRecognitionIntent(context);
     }
 }

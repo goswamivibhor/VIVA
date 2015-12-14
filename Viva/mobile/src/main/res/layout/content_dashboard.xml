@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/background"
+    android:background="@drawable/bg"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.govibs.viva.DashboardActivity"
     tools:showIn="@layout/activity_dashboard">
@@ -27,51 +27,71 @@
     <RelativeLayout
         android:id="@+id/rlConfiguredDashboard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:visibility="visible">
 
-        <RelativeLayout
-            android:id="@+id/rlBatteryProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:background="@drawable/round_background">
-
-            <com.pascalwelsch.holocircularprogressbar.HoloCircularProgressBar
-                android:layout_centerInParent="true"
-                android:id="@+id/holoCircularProgressBar"
-                android:layout_gravity="center|center_horizontal"
-                android:layout_width="100dp"
-                android:layout_height="100dp"/>
-
-        </RelativeLayout>
-
-
-        <!--<ListView
-            android:id="@+id/tvDashboardCommandHints"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/holoCircularProgressBar"
-            android:entries="@array/command_list"/>-->
-
         <TextView
             android:id="@+id/tvDashboardWeatherInfo"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:background="@drawable/square_information_block"
-            android:layout_below="@+id/rlBatteryProgressBar"
-            android:paddingStart="60dp"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/weather_panel"
+            android:paddingStart="50dp"
             android:paddingTop="40dp"
             android:paddingEnd="10dp"
             android:textColor="@android:color/white"
-            android:layout_alignParentStart="true"/>
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+        <FrameLayout
+            android:id="@+id/rlBatteryProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/battery_panel"
+            android:layout_below="@+id/tvDashboardWeatherInfo"
+            android:layout_alignParentStart="true">
+
+            <com.pascalwelsch.holocircularprogressbar.HoloCircularProgressBar
+                android:id="@+id/holoCircularProgressBar"
+                android:layout_gravity="center|center_horizontal"
+                android:gravity="center"
+                android:layout_width="100dp"
+                android:layout_height="100dp"/>
+
+            <TextView
+                android:id="@+id/tvDashboardBatteryPercentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dashboard_battery_percentage"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
+
+
+        <ListView
+            android:id="@+id/lvDashboardResults"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_alignTop="@+id/rlBatteryProgressBar"
+            android:layout_toEndOf="@+id/rlBatteryProgressBar"/>
+
 
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/tvDashboardBase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:src="@drawable/dock"
+        android:contentDescription="@string/app_name"/>
 
 </RelativeLayout>

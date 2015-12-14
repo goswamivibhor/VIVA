@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,6 +22,8 @@ import com.govibs.viva.storage.VivaPreferenceHelper;
 import com.govibs.viva.utilities.Utils;
 import com.pascalwelsch.holocircularprogressbar.HoloCircularProgressBar;
 
+import java.util.ArrayList;
+
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FloatingActionButton mFloatingActionButton;
@@ -26,6 +31,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private TextView tvInfoMessage, tvDashboardWeatherInfo;
     private RelativeLayout rlConfiguredDashboard;
     private HoloCircularProgressBar holoCircularProgressBarBattery;
+    private ArrayList<String> arrTextResponses = new ArrayList<>();
+    private ArrayAdapter<String> arrayAdapter;
+    private ListView lvDashboardResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         holoCircularProgressBarBattery = (HoloCircularProgressBar) findViewById(R.id.holoCircularProgressBar);
         holoCircularProgressBarBattery.setOnClickListener(this);
         tvDashboardWeatherInfo = (TextView) findViewById(R.id.tvDashboardWeatherInfo);
+        lvDashboardResults = (ListView) findViewById(R.id.lvDashboardResults);
+
     }
 
     @Override
@@ -106,6 +116,18 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                     VivaPreferenceHelper.setSetupComplete(DashboardActivity.this, false);
                 }
                 break;
+            case VivaHandler.VIVA_VOICE_RECOGNITION_REQUEST:
+                if (resultCode == RESULT_OK && data != null) {
+                    arrTextResponses = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    arrayAdapter = new ArrayAdapter<>(DashboardActivity.this, android.R.layout.simple_list_item_1, arrTextResponses);
+                    lvDashboardResults.setAdapter(arrayAdapter);
+                    lvDashboardResults.invalidate();
+                    for (String res : arrTextResponses) {
+                        Log.d(Global.TAG, res);
+                    }
+                }
+                break;
         }
     }
 
@@ -133,8 +155,10 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                     });
 
         } else {
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Speak", null).show();
+            /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Speak", null).show();*/
+            startActivityForResult(VivaHandler.getInstance().startListening(DashboardActivity.this),
+                    VivaHandler.VIVA_VOICE_RECOGNITION_REQUEST);
         }
     }
 
