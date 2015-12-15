@@ -5,10 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.govibs.iriscorelibrary.VivaManager;
-import com.govibs.iriscorelibrary.ai.VivaAIManager;
-import com.govibs.iriscorelibrary.handler.VivaManagerHandler;
-import com.govibs.iriscorelibrary.storage.IrisPreferenceHelper;
+import com.govibs.viva.ai.VivaAIManager;
+import com.govibs.viva.handler.VivaManagerHandler;
+import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
 import com.govibs.viva.storage.VivaPreferenceHelper;
 
 /**
@@ -59,8 +58,8 @@ public class VivaHandler implements VivaManagerHandler {
     }
 
     @Override
-    public void onVivaResponse(String s) {
-
+    public void onVivaResponse(Context context, String s) {
+        speak(context, s);
     }
 
     @Override
@@ -80,9 +79,9 @@ public class VivaHandler implements VivaManagerHandler {
 
     @Override
     public String getWeatherInformation(Context context) {
-        String info = "Temperature: " + IrisPreferenceHelper.getVivaCurrentTemp(context) + " degree Celcius\n"
-                + "Wind Speed: " + IrisPreferenceHelper.getVivaCurrentSpeed(context) + "Miles Per Hour\n"
-                + "Other Info: " + IrisPreferenceHelper.getVivaCurrentWeatherState(context);
+        String info = "Temperature: " + VivaLibraryPreferenceHelper.getVivaCurrentTemp(context) + " degree Celcius\n"
+                + "Wind Speed: " + VivaLibraryPreferenceHelper.getVivaCurrentSpeed(context) + "Miles Per Hour\n"
+                + "Other Info: " + VivaLibraryPreferenceHelper.getVivaCurrentWeatherState(context);
         if (!TextUtils.isEmpty(info)) {
             return info;
         } else {

@@ -6,6 +6,11 @@
     <uses-permission android:name="com.google.android.permission.PROVIDE_BACKGROUND" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -33,6 +38,28 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.govibs.viva.DashboardActivity" />
         </activity>
+        <service
+            android:name=".ai.services.VivaAIService"
+            android:exported="false" />
+        <service
+            android:name=".voice.services.VivaVoiceResponseService"
+            android:exported="false" />
+
+        <receiver
+            android:name=".receiver.VivaBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".weather.WeatherIntentService"
+            android:exported="false" />
 
     </application>
 

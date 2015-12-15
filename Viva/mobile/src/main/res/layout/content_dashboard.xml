@@ -59,7 +59,7 @@
                 android:layout_gravity="center|center_horizontal"
                 android:gravity="center"
                 android:layout_width="100dp"
-                android:layout_height="100dp"/>
+                android:layout_height="100dp" />
 
             <TextView
                 android:id="@+id/tvDashboardBatteryPercentage"
@@ -85,13 +85,39 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/tvDashboardBase"
+    <LinearLayout
+        android:id="@+id/llDashboardBase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
-        android:src="@drawable/dock"
-        android:contentDescription="@string/app_name"/>
+        android:background="@drawable/dock"
+        android:orientation="horizontal"
+        android:contentDescription="@string/app_name">
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:contentDescription="@string/app_name"
+            android:background="@drawable/earth"
+            android:scaleType="fitXY"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:contentDescription="@string/app_name"
+            android:background="@drawable/mail"
+            android:scaleType="fitXY"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:contentDescription="@string/app_name"
+            android:background="@drawable/cogs"
+            android:scaleType="fitXY"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

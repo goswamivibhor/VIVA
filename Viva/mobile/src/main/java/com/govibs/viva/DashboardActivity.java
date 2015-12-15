@@ -2,12 +2,10 @@ package com.govibs.viva;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,7 +15,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.govibs.iriscorelibrary.global.Global;
+import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaPreferenceHelper;
 import com.govibs.viva.utilities.Utils;
 import com.pascalwelsch.holocircularprogressbar.HoloCircularProgressBar;
@@ -28,7 +26,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     private FloatingActionButton mFloatingActionButton;
     private static final int REQUEST_SETUP = 1;
-    private TextView tvInfoMessage, tvDashboardWeatherInfo;
+    private TextView tvInfoMessage, tvDashboardWeatherInfo, tvDashboardBatteryPercentage;
     private RelativeLayout rlConfiguredDashboard;
     private HoloCircularProgressBar holoCircularProgressBarBattery;
     private ArrayList<String> arrTextResponses = new ArrayList<>();
@@ -50,7 +48,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         holoCircularProgressBarBattery.setOnClickListener(this);
         tvDashboardWeatherInfo = (TextView) findViewById(R.id.tvDashboardWeatherInfo);
         lvDashboardResults = (ListView) findViewById(R.id.lvDashboardResults);
-
+        tvDashboardBatteryPercentage = (TextView) findViewById(R.id.tvDashboardBatteryPercentage);
     }
 
     @Override
@@ -72,6 +70,12 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 }
             }
         }, 2000);
+        float batterPercentage = VivaHandler.getInstance().getBatteryPercentage(DashboardActivity.this);
+        if (batterPercentage > 0) {
+            holoCircularProgressBarBattery.setProgress(batterPercentage);
+            String batt = batterPercentage + "%";
+            tvDashboardBatteryPercentage.setText(batt);
+        }
     }
 
     @Override
@@ -126,6 +130,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                     for (String res : arrTextResponses) {
                         Log.d(Global.TAG, res);
                     }
+                    VivaHandler.getInstance().sayToViva(DashboardActivity.this, arrTextResponses.get(0));
                 }
                 break;
         }
@@ -167,7 +172,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
      */
     private void speakBatteryStatus() {
         String batteryStatus = VivaPreferenceHelper.getCallSign(DashboardActivity.this) + getString(R.string.battery_string_part_1)
-                + (int) holoCircularProgressBarBattery.getProgress() + getString(R.string.battery_string_part_2);
+                + " " + VivaHandler.getInstance().getBatteryPercentage(DashboardActivity.this) + " " + getString(R.string.battery_string_part_2);
         Log.i(Global.TAG, batteryStatus);
         VivaHandler.getInstance().speak(DashboardActivity.this, batteryStatus);
     }
