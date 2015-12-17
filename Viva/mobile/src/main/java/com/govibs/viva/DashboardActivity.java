@@ -93,7 +93,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                performSetup(v);
+                performSetup();
                 break;
             case R.id.holoCircularProgressBar:
                 speakBatteryStatus();
@@ -136,7 +136,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void performSetup(View view) {
+    private void performSetup() {
         if (mFloatingActionButton.getTag().equals("Start")) {
             mFloatingActionButton.setTag("Speak");
             Utils.showDialogWithButton(DashboardActivity.this, getString(R.string.voice_over_option_setup),

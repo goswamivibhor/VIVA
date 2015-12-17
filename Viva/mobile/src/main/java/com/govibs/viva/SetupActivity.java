@@ -1,5 +1,6 @@
 package com.govibs.viva;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -7,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.govibs.viva.storage.VivaPreferenceHelper;
@@ -31,6 +34,16 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
         etSetupName = (EditText) findViewById(R.id.etSetupName);
         etSetupName.setOnFocusChangeListener(this);
         radioGroupCallSign = (RadioGroup) findViewById(R.id.rgrpGender);
+        Switch switchSetupNotification = (Switch) findViewById(R.id.switchSetupNotification);
+        switchSetupNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+                    startActivity(intent);
+                }
+            }
+        });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,9 +82,9 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
             finish();
         } else {
             if (isSetupVoiceOver) {
-                speak(R.string.question_name);
+                speak(R.string.failed_setup);
             } else {
-                etSetupName.setHint(R.string.question_name);
+                etSetupName.setHint(R.string.failed_setup);
             }
         }
     }
@@ -87,9 +100,9 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
     private String getCallSign() {
         switch (radioGroupCallSign.getCheckedRadioButtonId()) {
             case R.id.radioBtnMale:
-                return getString(R.string.answer_male);
+                return getString(R.string.call_sir);
             case R.id.radioBtnFemale:
-                return getString(R.string.answer_female);
+                return getString(R.string.call_mam);
             case R.id.radioBtnDefault:
             default:
                 return etSetupName.getEditableText().toString();
