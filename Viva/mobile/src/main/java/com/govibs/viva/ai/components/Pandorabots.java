@@ -1,7 +1,7 @@
 package com.govibs.viva.ai.components;
 
 
-import com.govibs.viva.utils.AIUtils;
+import com.govibs.viva.utilities.AIUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -13,6 +13,7 @@ import com.govibs.viva.ai.services.OnAIServiceCallback;
 import com.govibs.viva.ai.services.VivaAIService;
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
+import com.govibs.viva.utilities.Utils;
 import com.govibs.viva.voice.VivaVoiceManager;
 
 /**
@@ -80,7 +81,7 @@ public class VivaAIManager implements OnAIServiceCallback {
                 case CALL:
                     break;
                 case TIME:
-
+                    
                     break;
                 case WEATHER:
                     VivaVoiceManager.getInstance().speak(context, VivaLibraryPreferenceHelper.getIrisWeatherInfo(context));

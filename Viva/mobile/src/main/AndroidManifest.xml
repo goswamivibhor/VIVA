@@ -40,10 +40,12 @@
         </activity>
         <service
             android:name=".ai.services.VivaAIService"
-            android:exported="false" />
+            android:exported="false"
+            android:enabled="true" />
         <service
             android:name=".voice.services.VivaVoiceResponseService"
-            android:exported="false" />
+            android:exported="false"
+            android:enabled="true" />
 
         <receiver
             android:name=".receiver.VivaBroadcastReceiver"

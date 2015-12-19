@@ -1,4 +1,4 @@
-package com.govibs.viva.utils;
+package com.govibs.viva.utilities;
 
 import android.app.ActivityManager;
 import android.content.Context;

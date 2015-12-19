@@ -7,6 +7,11 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
+import com.govibs.viva.global.Global;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * The utility class for generic utility methods.
  * Created by Vibhor on 12/8/15.
@@ -127,6 +132,36 @@ public class Utils {
         builder.setMessage(message);
         builder.create().show();
     }
+
+    /**
+     * Get current date for display or for speaking.
+     * @return Current date
+     */
+    public static String getCurrentDate(boolean forDisplay) {
+        Calendar calendar = Calendar.getInstance(Global.VIVA_LOCALE);
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        SimpleDateFormat sdfDisplay = new SimpleDateFormat("MMM-dd-yyyy", Global.VIVA_LOCALE);
+        SimpleDateFormat sdfSpeak = new SimpleDateFormat("MMM/dd/yyyy", Global.VIVA_LOCALE);
+        if (forDisplay) {
+            return sdfDisplay.format(calendar.getTime());
+        } else {
+            return sdfSpeak.format(calendar.getTime());
+        }
+    }
+
+    public static String getCurrentTime(boolean forDisplay) {
+        Calendar calendar = Calendar.getInstance(Global.VIVA_LOCALE);
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        SimpleDateFormat sdfDisplay = new SimpleDateFormat("HH:mm", Global.VIVA_LOCALE);
+        SimpleDateFormat sdfSpeak = new SimpleDateFormat("HH:mm", Global.VIVA_LOCALE);
+        if (forDisplay) {
+            return sdfDisplay.format(calendar.getTime());
+        } else {
+            return sdfSpeak.format(calendar.getTime());
+        }
+    }
+
+
 
 
 }

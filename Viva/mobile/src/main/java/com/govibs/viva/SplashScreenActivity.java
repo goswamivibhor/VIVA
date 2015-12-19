@@ -18,7 +18,7 @@ import com.govibs.viva.storage.VivaPreferenceHelper;
 public class SplashScreenActivity extends AppCompatActivity {
 
     private VivaInitializedBroadcast mVivaInitializedBroadcast = new VivaInitializedBroadcast();
-    boolean mInternetPermission = false, mGpsPermission = false;
+    boolean mInternetPermission = false, mGpsPermission = false, mSMSPermission = false;
     private static final int REQ_INTERNET_PERMISSION = 1;
     private TextView tvSplashScreenInfo;
 
@@ -39,13 +39,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         registerReceiver(mVivaInitializedBroadcast, filter);
         mInternetPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED;
         mGpsPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        if (mInternetPermission && mGpsPermission) {
+        mSMSPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED;
+        if (mInternetPermission && mGpsPermission && mSMSPermission) {
             tvSplashScreenInfo.setVisibility(View.VISIBLE);
             VivaHandler.getInstance().initialize(SplashScreenActivity.this, SplashScreenActivity.this);
         } else {
             ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.INTERNET,
                     Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION }, REQ_INTERNET_PERMISSION);
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.READ_SMS,
+                    Manifest.permission.RECEIVE_SMS,
+                    Manifest.permission.SEND_SMS },
+                    REQ_INTERNET_PERMISSION);
         }
     }
 
@@ -74,7 +79,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
 
                     // permission was granted, yay!
                     tvSplashScreenInfo.setVisibility(View.VISIBLE);
