@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.govibs.viva.global.Global;
 
 
 /**
+ *
  * Created by Vibhor on 12/14/15.
  */
 public class VivaNotificationListenerService extends NotificationListenerService {
@@ -37,9 +39,9 @@ public class VivaNotificationListenerService extends NotificationListenerService
     public void onNotificationPosted(StatusBarNotification sbn) {
         super.onNotificationPosted(sbn);
         Log.i(TAG, "****** Notification Posted");
-        Log.i(TAG,"ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
+        Log.i(TAG, "ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
         Intent i = new  Intent(Global.ACTION_NOTIFICATION_SERVICE);
-        i.putExtra("notification_event", "onNotificationPosted :" + sbn.getPackageName() + "\n");
+        i.putExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT, sbn.getPackageName());
         sendBroadcast(i);
     }
 
@@ -47,17 +49,20 @@ public class VivaNotificationListenerService extends NotificationListenerService
     public void onNotificationRemoved(StatusBarNotification sbn) {
         super.onNotificationRemoved(sbn);
         Log.i(TAG,"********** onNOtificationRemoved");
-        Log.i(TAG,"ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText +"\t" + sbn.getPackageName());
+        Log.i(TAG, "ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
         Intent i = new  Intent(Global.ACTION_NOTIFICATION_SERVICE);
-        i.putExtra("notification_event","onNotificationRemoved :" + sbn.getPackageName() + "\n");
-        sendBroadcast(i);
+        i.putExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED, sbn.getPackageName());
+                sendBroadcast(i);
     }
 
     class NLServiceReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getStringExtra("command").equals("clearall")){
-                VivaNotificationListenerService.this.cancelAllNotifications();
+            String command = intent.getStringExtra("command");
+            if (!TextUtils.isEmpty(command)) {
+                if (command.equals("clearall")) {
+                    VivaNotificationListenerService.this.cancelAllNotifications();
+                }
             }
         }
     }

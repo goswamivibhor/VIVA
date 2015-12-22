@@ -49,6 +49,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         tvDashboardWeatherInfo = (TextView) findViewById(R.id.tvDashboardWeatherInfo);
         lvDashboardResults = (ListView) findViewById(R.id.lvDashboardResults);
         tvDashboardBatteryPercentage = (TextView) findViewById(R.id.tvDashboardBatteryPercentage);
+
+        boolean functionalityEnabled = getIntent().getBooleanExtra(Global.VIVA_FUNCTIONALITY_ENABLED, true);
+        if (!functionalityEnabled) {
+            Log.i(Global.TAG, "Functionality is enabled.");
+        }
     }
 
     @Override
@@ -137,7 +142,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void performSetup() {
-        if (mFloatingActionButton.getTag().equals("Start")) {
+        if (mFloatingActionButton.getTag().equals("Start") &&
+                VivaPreferenceHelper.isSetupComplete(DashboardActivity.this)) {
             mFloatingActionButton.setTag("Speak");
             Utils.showDialogWithButton(DashboardActivity.this, getString(R.string.voice_over_option_setup),
                     "Okay",

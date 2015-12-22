@@ -67,9 +67,9 @@ public class Conversation {
     public static boolean isCommand(String message) {
         boolean status = false;
         message = message.toLowerCase(Locale.UK);
-        if (message.toLowerCase().startsWith(Global.VIVA) && (message.toLowerCase().contains(CommandType.BATTERY.toString())
+        if (message.toLowerCase().contains(CommandType.BATTERY.toString())
                 || message.toLowerCase().contains(CommandType.CALL.toString()) || message.toLowerCase().contains(CommandType.WEATHER.toString())
-                || message.toLowerCase().contains(CommandType.TIME.toString()))) {
+                || message.toLowerCase().contains(CommandType.TIME.toString())) {
             status = true;
         }
         return status;

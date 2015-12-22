@@ -3,6 +3,8 @@ package com.govibs.viva.utilities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -152,7 +154,7 @@ public class Utils {
     public static String getCurrentTime(boolean forDisplay) {
         Calendar calendar = Calendar.getInstance(Global.VIVA_LOCALE);
         calendar.setTimeInMillis(System.currentTimeMillis());
-        SimpleDateFormat sdfDisplay = new SimpleDateFormat("HH:mm", Global.VIVA_LOCALE);
+        SimpleDateFormat sdfDisplay = new SimpleDateFormat("HH:mm a", Global.VIVA_LOCALE);
         SimpleDateFormat sdfSpeak = new SimpleDateFormat("HH:mm", Global.VIVA_LOCALE);
         if (forDisplay) {
             return sdfDisplay.format(calendar.getTime());
@@ -162,6 +164,24 @@ public class Utils {
     }
 
 
+    /**
+     * Get the application name from package name.
+     * @param context - the calling application context
+     * @param packageName - the name of the package
+     * @return Application Name
+     */
+    public static String getApplicationName(Context context, String packageName) {
+        String appName = "Unknown";
+        final PackageManager packageManager = context.getApplicationContext().getPackageManager();
+        ApplicationInfo applicationInfo;
+        try {
+            applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+            appName = (String) (applicationInfo != null ? packageManager.getApplicationLabel(applicationInfo) : "Unknown");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return appName;
+    }
 
 
 }

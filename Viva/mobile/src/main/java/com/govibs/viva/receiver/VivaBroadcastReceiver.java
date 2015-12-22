@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
+import com.govibs.viva.utilities.Utils;
 import com.govibs.viva.voice.VivaVoiceManager;
 
 
@@ -61,9 +62,14 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
         }
 
         if (intent.getAction().equals(Global.ACTION_NOTIFICATION_SERVICE)) {
-            String temp = intent.getStringExtra("notification_event");
-            Log.i(Global.TAG, temp);
-            VivaVoiceManager.getInstance().speak(context, temp);
+            if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT)) {
+                String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT);
+                Log.i(Global.TAG, "Notification event received: " + Utils.getApplicationName(context, event));
+
+            } else if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED)) {
+                String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED);
+                Log.i(Global.TAG, "Notification event removed: " + Utils.getApplicationName(context, event));
+            }
         }
     }
 }

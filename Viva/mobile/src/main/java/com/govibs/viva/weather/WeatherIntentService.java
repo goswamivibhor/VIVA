@@ -136,7 +136,7 @@ public class WeatherIntentService extends IntentService {
                 String windSpeed = (int)jsonObject.getJSONObject("wind").getDouble("speed") + "";
                 JSONObject weatherObject = jsonObject.getJSONArray("weather").getJSONObject(0);
                 String weather = weatherObject.getString("description");
-                String vivaSay = weather + " at " + temperature + " degree Celcius in " + cityName + ". Wind spped is " + windSpeed + " miles per hour.";
+                String vivaSay = weather + " with " + temperature + " degrees Celsius in " + cityName + ". Wind speed is " + windSpeed + " miles per hour.";
                 VivaLibraryPreferenceHelper.saveIrisWeatherInfo(mContext, vivaSay);
                 VivaLibraryPreferenceHelper.setVivaCurrentTemp(mContext, Float.parseFloat(temperature));
                 VivaLibraryPreferenceHelper.setVivaCurrentWindSpeed(mContext, Float.parseFloat(windSpeed));

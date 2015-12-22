@@ -10,25 +10,123 @@
     tools:context="com.govibs.viva.SplashScreenActivity">
 
     <TextView
-        android:id="@+id/tvSplashScreenWelcomeMessage"
+        android:id="@+id/tvSplashScreenLetterV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="44sp"
-        android:textAllCaps="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/splash_screen_anim_v"
+        android:textSize="38sp"
         android:textStyle="bold"
-        android:textColor="@android:color/holo_blue_dark"
-        android:text="@string/app_name"/>
-
+        android:textColor="@android:color/holo_blue_dark"/>
 
     <TextView
-        android:id="@+id/tvSplashScreenInfo"
+        android:id="@+id/tvSplashScreenDescVery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvSplashScreenWelcomeMessage"
-        android:text="@string/status_init"
-        android:textStyle="italic"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/tvSplashScreenLetterV"
+        android:text="@string/splash_screen_anim_very"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_orange_light"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenLetterI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenLetterV"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"/>
+        android:text="@string/splash_screen_anim_i"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_blue_dark"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenDescIntelligent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenDescVery"
+        android:layout_toEndOf="@+id/tvSplashScreenLetterI"
+        android:text="@string/splash_screen_anim_intelligent"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_orange_light"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenLetterViv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenLetterI"
+        android:layout_centerHorizontal="true"
+        android:text="@string/splash_screen_anim_v"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_blue_dark"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenDescVirtual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenDescIntelligent"
+        android:layout_toEndOf="@+id/tvSplashScreenLetterViv"
+        android:text="@string/splash_screen_anim_virtual"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_orange_light"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenLetterViva"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenLetterViv"
+        android:layout_centerHorizontal="true"
+        android:text="@string/splash_screen_anim_a"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_blue_dark"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenDescAssistant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenLetterViv"
+        android:layout_toEndOf="@+id/tvSplashScreenLetterViva"
+        android:text="@string/splash_screen_anim_assistant"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_orange_light"/>
+
+    <RelativeLayout
+        android:id="@+id/rlSplashScreenDisplayBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/tvSplashScreenWelcomeMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="44sp"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_blue_dark"
+            android:text="@string/app_name_splash_screen_display"/>
+
+
+        <TextView
+            android:id="@+id/tvSplashScreenInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSplashScreenWelcomeMessage"
+            android:text="@string/status_init"
+            android:textStyle="italic"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>
