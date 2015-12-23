@@ -53,7 +53,7 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
                     intentJarvisCPU.setAction(JarvisCPU.JARVIS_SMS_RECEIVED);
                     intentJarvisCPU.putExtra(JarvisCPU.JARVIS_SMS_RECEIVED, msg.getOriginatingAddress() + "|" + msg.getMessageBody());
                     context.startService(intentJarvisCPU);*/
-                    VivaVoiceManager.getInstance().speak(context, "I received a message.");
+                    VivaVoiceManager.getInstance().speak(context.getApplicationContext(), "I received a message.");
                     abortBroadcast();
                 }
             }
@@ -66,10 +66,11 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
             if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT);
                 Log.i(Global.TAG, "Notification event received: " + Utils.getApplicationName(context, event));
-
+                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), "Sir, I received a notification.");
             } else if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED);
                 Log.i(Global.TAG, "Notification event removed: " + Utils.getApplicationName(context, event));
+                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), "Sir, notification has been removed.");
             }
         }
     }

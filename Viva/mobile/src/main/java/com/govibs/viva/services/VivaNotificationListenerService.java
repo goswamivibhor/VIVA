@@ -52,7 +52,7 @@ public class VivaNotificationListenerService extends NotificationListenerService
         Log.i(TAG, "ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
         Intent i = new  Intent(Global.ACTION_NOTIFICATION_SERVICE);
         i.putExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED, sbn.getPackageName());
-                sendBroadcast(i);
+        sendBroadcast(i);
     }
 
     class NLServiceReceiver extends BroadcastReceiver {
