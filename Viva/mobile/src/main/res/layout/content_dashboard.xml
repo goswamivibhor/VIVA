@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/bg"
+    android:background="@drawable/glowy_hex"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.govibs.viva.DashboardActivity"
     tools:showIn="@layout/activity_dashboard">
@@ -50,7 +50,6 @@
             android:id="@+id/rlBatteryProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/battery_panel"
             android:layout_below="@+id/tvDashboardWeatherInfo"
             android:layout_alignParentStart="true">
 

@@ -38,14 +38,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.govibs.viva.DashboardActivity" />
         </activity>
+
         <service
             android:name=".ai.services.VivaAIService"
-            android:exported="false"
-            android:enabled="true" />
+            android:enabled="true"
+            android:exported="false" />
         <service
             android:name=".voice.services.VivaVoiceResponseService"
-            android:exported="false"
-            android:enabled="true" />
+            android:enabled="true"
+            android:exported="false" />
 
         <receiver
             android:name=".receiver.VivaBroadcastReceiver"
@@ -62,8 +63,8 @@
         <service
             android:name=".weather.WeatherIntentService"
             android:exported="false" />
-
-        <service android:name=".services.VivaNotificationListenerService"
+        <service
+            android:name=".services.VivaNotificationListenerService"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
@@ -71,6 +72,7 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>

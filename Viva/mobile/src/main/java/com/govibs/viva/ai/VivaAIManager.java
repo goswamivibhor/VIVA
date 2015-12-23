@@ -82,6 +82,7 @@ public class VivaAIManager implements OnAIServiceCallback {
                     break;
                 case TIME:
                     String time = "It is " + Utils.getCurrentTime(false);
+                    VivaVoiceManager.getInstance().speak(context, time);
                     break;
                 case WEATHER:
                     VivaVoiceManager.getInstance().speak(context, VivaLibraryPreferenceHelper.getIrisWeatherInfo(context));

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.govibs.viva.AboutActivity"
+    android:background="@drawable/glowy_hex">
+
+    <TextView
+        android:id="@+id/tvSplashScreenLetterV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/splash_screen_anim_v"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_blue_dark"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenDescVery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvSplashScreenLetterV"
+        android:layout_toEndOf="@+id/tvSplashScreenLetterV"
+        android:text="@string/splash_screen_anim_very"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_orange_light"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenLetterI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenLetterV"
+        android:text="@string/splash_screen_anim_i"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_blue_dark"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenDescIntelligent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenDescVery"
+        android:layout_toEndOf="@+id/tvSplashScreenLetterI"
+        android:text="@string/splash_screen_anim_intelligent"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_orange_light"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenLetterViv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenLetterI"
+        android:text="@string/splash_screen_anim_v"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_blue_dark"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenDescVirtual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenDescIntelligent"
+        android:layout_toEndOf="@+id/tvSplashScreenLetterViv"
+        android:text="@string/splash_screen_anim_virtual"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_orange_light"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenLetterViva"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenLetterViv"
+        android:text="@string/splash_screen_anim_a"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_blue_dark"/>
+
+    <TextView
+        android:id="@+id/tvSplashScreenDescAssistant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSplashScreenLetterViv"
+        android:layout_toEndOf="@+id/tvSplashScreenLetterViva"
+        android:text="@string/splash_screen_anim_assistant"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_orange_light"/>
+
+</RelativeLayout>

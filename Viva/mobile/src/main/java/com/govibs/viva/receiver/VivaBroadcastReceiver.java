@@ -34,6 +34,7 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
             int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
             float batteryPct = (level / (float)scale) * 100;
+            Log.i(Global.TAG, "Battery Percentage: " + batteryPct);
             VivaLibraryPreferenceHelper.setBatteryStatus(context, isCharging,
                     usbCharge, acCharge, batteryPct);
         }
