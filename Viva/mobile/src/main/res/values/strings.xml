@@ -17,11 +17,12 @@
         "I can also setup alarms, take voice notes, remind you of certain things. I can monitor your health and can suggest improvements based on your choices.\n"
 
         "I am your friend and will be available for you both offline and online."</string>
-    <string name="title_activity_dashboard">DashboardActivity</string>
-    <string name="title_activity_setup">SetupActivity</string>
+    <string name="title_activity_dashboard">V.I.V.A Dashboard</string>
+    <string name="title_activity_setup">Setup</string>
     <string name="action_settings">Settings</string>
     <string name="dashboard_battery_percentage">50</string>
     <string name="dashboard_commands">Commands</string>
+    <string name="viva_listening">Listening&#8230;</string>
 
     <!-- Put your own APP ID here -->
     <string name="open_weather_maps_app_id">bd94b677e4673cb6a0fc398cc824325d</string>

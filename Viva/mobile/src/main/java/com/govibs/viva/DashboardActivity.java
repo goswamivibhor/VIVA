@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -49,6 +50,12 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         tvDashboardWeatherInfo = (TextView) findViewById(R.id.tvDashboardWeatherInfo);
         lvDashboardResults = (ListView) findViewById(R.id.lvDashboardResults);
         tvDashboardBatteryPercentage = (TextView) findViewById(R.id.tvDashboardBatteryPercentage);
+        ImageButton ibDashboardEmail = (ImageButton) findViewById(R.id.ibDashboardEmail);
+        ibDashboardEmail.setOnClickListener(this);
+        ImageButton ibDashboardSearch = (ImageButton) findViewById(R.id.ibDashboardWebSearch);
+        ibDashboardSearch.setOnClickListener(this);
+        ImageButton ibDashboardSettings = (ImageButton) findViewById(R.id.ibDashboardSettings);
+        ibDashboardSettings.setOnClickListener(this);
 
         boolean functionalityEnabled = getIntent().getBooleanExtra(Global.VIVA_FUNCTIONALITY_ENABLED, true);
         if (!functionalityEnabled) {
@@ -105,6 +112,31 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.tvDashboardWeatherInfo:
                 VivaHandler.getInstance().getWeatherInformationToSpeak(this);
+                break;
+            case R.id.ibDashboardEmail:
+                break;
+            case R.id.ibDashboardSettings:
+                Utils.showDialogWithButton(DashboardActivity.this, getString(R.string.voice_over_option_setup),
+                        "Okay",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(DashboardActivity.this, SetupActivity.class);
+                                intent.putExtra(SetupActivity.SETUP_VOICE_OVER, true);
+                                startActivityForResult(intent, REQUEST_SETUP);
+                            }
+                        },
+                        "Nope",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(DashboardActivity.this, SetupActivity.class);
+                                intent.putExtra(SetupActivity.SETUP_VOICE_OVER, false);
+                                startActivityForResult(intent, REQUEST_SETUP);
+                            }
+                        });
+                break;
+            case R.id.ibDashboardWebSearch:
                 break;
         }
     }
@@ -168,8 +200,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         } else {
             /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Speak", null).show();*/
-            startActivityForResult(VivaHandler.getInstance().startListening(DashboardActivity.this),
-                    VivaHandler.VIVA_VOICE_RECOGNITION_REQUEST);
+            listenForRequest(getString(R.string.viva_listening));
         }
     }
 
@@ -181,5 +212,10 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 + " " + VivaHandler.getInstance().getBatteryPercentage(DashboardActivity.this) + " " + getString(R.string.battery_string_part_2);
         Log.i(Global.TAG, batteryStatus);
         VivaHandler.getInstance().speak(DashboardActivity.this, batteryStatus);
+    }
+
+    private void listenForRequest(String header) {
+        startActivityForResult(VivaHandler.getInstance().startListening(DashboardActivity.this, header),
+                VivaHandler.VIVA_VOICE_RECOGNITION_REQUEST);
     }
 }

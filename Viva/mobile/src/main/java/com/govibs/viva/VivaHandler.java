@@ -104,7 +104,7 @@ public class VivaHandler implements VivaManagerHandler {
         }
     }
 
-    public Intent startListening(Context context) {
-        return VivaAIManager.getInstance().getVoiceRecognitionIntent(context);
+    public Intent startListening(Context context, String header) {
+        return VivaAIManager.getInstance().getVoiceRecognitionIntent(context, header);
     }
 }

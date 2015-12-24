@@ -3,6 +3,7 @@ package com.govibs.viva.ai;
 import android.content.Context;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.govibs.viva.R;
@@ -114,14 +115,15 @@ public class VivaAIManager implements OnAIServiceCallback {
         }
     }
 
-    public Intent getVoiceRecognitionIntent(Context context) {
+    public Intent getVoiceRecognitionIntent(Context context, String header) {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
         // Specify the calling package to identify your application
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getClass().getPackage().getName());
 
         // Display an hint to the user about what he should say.
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.app_name));
+        String message = TextUtils.isEmpty(header) ? header : context.getString(R.string.app_name);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, message);
 
         // Given an hint to the recognizer about what the user is going to say
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,

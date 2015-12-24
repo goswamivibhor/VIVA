@@ -47,7 +47,7 @@ public class VivaPreferenceHelper {
     }
 
     public static String getCallSign(Context context) {
-        return getPreferences(context).getString(CallSign, "Sir");
+        return getPreferences(context).getString(CallSign, "Boss");
     }
 
 }
