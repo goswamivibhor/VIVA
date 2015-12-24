@@ -34,6 +34,13 @@ public enum CommandType {
         }
     },
 
+    SEARCH {
+        @Override
+        public String toString() {
+            return "search";
+        }
+    },
+
     DEFAULT
 
 }

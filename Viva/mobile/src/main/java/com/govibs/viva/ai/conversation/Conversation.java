@@ -46,15 +46,14 @@ public class Conversation {
         CommandType commandType = CommandType.DEFAULT;
         if (command.contains(CommandType.BATTERY.toString())) {
             return CommandType.BATTERY;
-        }
-        else if (command.contains(CommandType.CALL.toString())) {
+        } else if (command.contains(CommandType.CALL.toString())) {
             return CommandType.CALL;
-        }
-        else if (command.contains(CommandType.WEATHER.toString())) {
+        } else if (command.contains(CommandType.WEATHER.toString())) {
             return CommandType.WEATHER;
-        }
-        else if (command.contains(CommandType.TIME.toString())) {
+        } else if (command.contains(CommandType.TIME.toString())) {
             return CommandType.TIME;
+        } else if (command.contains(CommandType.SEARCH.toString())) {
+            return CommandType.SEARCH;
         }
         return commandType;
     }
