@@ -137,6 +137,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                         });
                 break;
             case R.id.ibDashboardWebSearch:
+                listenForRequest("Search for...");
                 break;
         }
     }
