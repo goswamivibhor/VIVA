@@ -48,7 +48,7 @@ public class VivaNotificationListenerService extends NotificationListenerService
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
         super.onNotificationRemoved(sbn);
-        Log.i(TAG,"********** onNOtificationRemoved");
+        Log.i(TAG,"********** Notification Removed");
         Log.i(TAG, "ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
         Intent i = new  Intent(Global.ACTION_NOTIFICATION_SERVICE);
         i.putExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED, sbn.getPackageName());

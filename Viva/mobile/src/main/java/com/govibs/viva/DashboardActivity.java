@@ -83,7 +83,10 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         }, 2000);
         float batteryPercentage = VivaHandler.getInstance().getBatteryPercentage(DashboardActivity.this);
         if (batteryPercentage > 0) {
-            holoCircularProgressBarBattery.setMarkerProgress(batteryPercentage); //.setProgress(batterPercentage);
+            holoCircularProgressBarBattery.setProgress(batteryPercentage);
+            holoCircularProgressBarBattery.setMarkerProgress(100);
+            holoCircularProgressBarBattery.setMarkerEnabled(true);
+            holoCircularProgressBarBattery.setProgressColor(Utils.getColorForBattery(DashboardActivity.this, batteryPercentage));
             String battery = (int) batteryPercentage + "%";
             tvDashboardBatteryPercentage.setText(battery);
         }

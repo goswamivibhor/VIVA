@@ -80,15 +80,22 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
             }
         }
 
-        if (intent.getAction().equals(Global.ACTION_NOTIFICATION_SERVICE)) {
+        if (intent.getAction().equalsIgnoreCase(Global.ACTION_NOTIFICATION_SERVICE)) {
             if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT);
-                Log.i(Global.TAG, "Notification event received: " + Utils.getApplicationName(context, event));
-                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), context.getString(R.string.notification_received));
+                String appName = Utils.getApplicationName(context, event);
+                Log.i(Global.TAG, "Notification event received: " + appName);
+                String speak;
+                if (appName.equalsIgnoreCase(context.getString(R.string.unknown))) {
+                    speak = context.getString(R.string.notification_received_unknown);
+                } else {
+                    speak = context.getString(R.string.notification_received) + appName;
+                }
+                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), speak);
             } else if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED);
                 Log.i(Global.TAG, "Notification event removed: " + Utils.getApplicationName(context, event));
-                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), context.getString(R.string.notification_removed));
+                //VivaVoiceManager.getInstance().speak(context.getApplicationContext(), context.getString(R.string.notification_removed));
             }
         }
     }

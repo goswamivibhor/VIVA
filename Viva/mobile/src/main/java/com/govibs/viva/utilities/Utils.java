@@ -9,12 +9,14 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
+import com.govibs.viva.BuildConfig;
 import com.govibs.viva.R;
 import com.govibs.viva.global.Global;
 
@@ -178,7 +180,7 @@ public class Utils {
      * @return Application Name
      */
     public static String getApplicationName(Context context, String packageName) {
-        String appName = "Unknown";
+        String appName = context.getString(R.string.unknown);
         final PackageManager packageManager = context.getApplicationContext().getPackageManager();
         ApplicationInfo applicationInfo;
         try {
@@ -186,7 +188,7 @@ public class Utils {
             if (applicationInfo != null) {
                 appName = packageManager.getApplicationLabel(applicationInfo).toString();
             } else {
-                appName = "Unknown";
+                appName = context.getString(R.string.unknown);
             }
             //appName = (String) (applicationInfo != null ? packageManager.getApplicationLabel(applicationInfo) : "Unknown");
         } catch (Exception ex) {
@@ -251,6 +253,22 @@ public class Utils {
             }
         }
         return name;
+    }
+
+    /**
+     * Get the color for battery based on the percentage.
+     * @param context - the calling application context
+     * @param percentage - the percentage of the battery.
+     * @return Color resource.
+     */
+    public static int getColorForBattery(Context context, float percentage) {
+        if (percentage <= 5) {
+            return context.getResources().getColor(android.R.color.holo_red_dark);
+        } else if (percentage > 5 && percentage <= 15) {
+            return context.getResources().getColor(android.R.color.holo_orange_dark);
+        } else {
+            return context.getResources().getColor(android.R.color.holo_green_dark);
+        }
     }
 
 }
