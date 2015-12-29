@@ -31,7 +31,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private TextView tvInfoMessage, tvDashboardWeatherInfo, tvDashboardBatteryPercentage;
     private RelativeLayout rlConfiguredDashboard;
     private HoloCircularProgressBar holoCircularProgressBarBattery;
-    private ArrayList<String> arrTextResponses = new ArrayList<>();
     private ListView lvDashboardResults;
 
     @Override
@@ -82,11 +81,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 }
             }
         }, 2000);
-        float batterPercentage = VivaHandler.getInstance().getBatteryPercentage(DashboardActivity.this);
-        if (batterPercentage > 0) {
-            holoCircularProgressBarBattery.setProgress(batterPercentage);
-            String batt = batterPercentage + "%";
-            tvDashboardBatteryPercentage.setText(batt);
+        float batteryPercentage = VivaHandler.getInstance().getBatteryPercentage(DashboardActivity.this);
+        if (batteryPercentage > 0) {
+            holoCircularProgressBarBattery.setMarkerProgress(batteryPercentage); //.setProgress(batterPercentage);
+            String battery = (int) batteryPercentage + "%";
+            tvDashboardBatteryPercentage.setText(battery);
         }
     }
 
@@ -160,7 +159,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 break;
             case VivaHandler.VIVA_VOICE_RECOGNITION_REQUEST:
                 if (resultCode == RESULT_OK && data != null) {
-                    arrTextResponses = data
+                    ArrayList<String> arrTextResponses = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     UIDisplayAdapter arrayAdapter = new UIDisplayAdapter(DashboardActivity.this, R.layout.layout_list_text_view, arrTextResponses);
                     lvDashboardResults.setAdapter(arrayAdapter);
@@ -169,11 +168,16 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                         Log.d(Global.TAG, res);
                     }
                     VivaHandler.getInstance().sayToViva(DashboardActivity.this, arrTextResponses.get(0));
+                } else {
+                    VivaHandler.getInstance().speak(DashboardActivity.this, getString(R.string.unable_to_understand));
                 }
                 break;
         }
     }
 
+    /**
+     * This method checks if setup is required.
+     */
     private void performSetup() {
         if (mFloatingActionButton.getTag().equals("Start") &&
                 VivaPreferenceHelper.isSetupComplete(DashboardActivity.this)) {
@@ -215,6 +219,10 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         VivaHandler.getInstance().speak(DashboardActivity.this, batteryStatus);
     }
 
+    /**
+     * Listen for request.
+     * @param header - the dialog label for the search box.
+     */
     private void listenForRequest(String header) {
         startActivityForResult(VivaHandler.getInstance().startListening(DashboardActivity.this, header),
                 VivaHandler.VIVA_VOICE_RECOGNITION_REQUEST);

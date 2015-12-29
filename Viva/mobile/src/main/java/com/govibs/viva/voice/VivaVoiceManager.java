@@ -2,6 +2,7 @@ package com.govibs.viva.voice;
 
 import android.content.Context;
 
+import com.govibs.viva.utilities.Utils;
 import com.govibs.viva.voice.services.VivaVoiceResponseService;
 
 
@@ -10,6 +11,7 @@ import com.govibs.viva.voice.services.VivaVoiceResponseService;
  * Created by goswamiv on 12/9/15.
  */
 public class VivaVoiceManager {
+
     private static VivaVoiceManager ourInstance = new VivaVoiceManager();
 
     public static VivaVoiceManager getInstance() {
@@ -20,6 +22,8 @@ public class VivaVoiceManager {
     }
 
     public void speak(Context context, String messageToSpeak) {
-        VivaVoiceResponseService.startActionRespond(context, messageToSpeak);
+        if (!Utils.isPhoneInSilent(context)) {
+            VivaVoiceResponseService.startActionRespond(context, messageToSpeak);
+        }
     }
 }

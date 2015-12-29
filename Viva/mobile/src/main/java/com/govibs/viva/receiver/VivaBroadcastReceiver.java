@@ -1,18 +1,25 @@
 package com.govibs.viva.receiver;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.BatteryManager;
+import android.provider.ContactsContract;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
+import com.govibs.viva.R;
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
 import com.govibs.viva.utilities.Utils;
 import com.govibs.viva.voice.VivaVoiceManager;
 
 
+/**
+ * The Broadcast receiver for all notifications.
+ */
 public class VivaBroadcastReceiver extends BroadcastReceiver {
     public VivaBroadcastReceiver() {
     }
@@ -35,6 +42,9 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
 
             float batteryPct = (level / (float)scale) * 100;
             Log.i(Global.TAG, "Battery Percentage: " + batteryPct);
+            if (batteryPct <= 15) {
+                VivaVoiceManager.getInstance().speak(context, context.getString(R.string.battery_low));
+            }
             VivaLibraryPreferenceHelper.setBatteryStatus(context, isCharging,
                     usbCharge, acCharge, batteryPct);
         }
@@ -45,16 +55,24 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
         if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
             try {
                 Object[] rawMsgs=(Object[])intent.getExtras().get("pdus");
-                for (Object raw : rawMsgs) {
-                    SmsMessage msg = SmsMessage.createFromPdu((byte[])raw);
-                    Log.i(Global.TAG, "Address: " + msg.getOriginatingAddress() + " Body: " + msg.getMessageBody());
-                    // TODO Check in contact list if this address is present. Pass this on to the CPU.
+                if (rawMsgs != null) {
+                    for (Object raw : rawMsgs) {
+                        SmsMessage msg = SmsMessage.createFromPdu((byte[]) raw);
+                        Log.i(Global.TAG, "Address: " + msg.getOriginatingAddress() + " Body: " + msg.getMessageBody());
+                        // TODO Check in contact list if this address is present. Pass this on to the CPU.
                     /*Intent intentJarvisCPU = new Intent(context, JarvisCPU.class);
                     intentJarvisCPU.setAction(JarvisCPU.JARVIS_SMS_RECEIVED);
                     intentJarvisCPU.putExtra(JarvisCPU.JARVIS_SMS_RECEIVED, msg.getOriginatingAddress() + "|" + msg.getMessageBody());
                     context.startService(intentJarvisCPU);*/
-                    VivaVoiceManager.getInstance().speak(context.getApplicationContext(), "I received a message.");
-                    abortBroadcast();
+                        String contactName = Utils.getContactName(context, msg.getOriginatingAddress());
+                        if (contactName.equalsIgnoreCase(context.getString(R.string.unknown))) {
+                            VivaVoiceManager.getInstance().speak(context.getApplicationContext(), "I received a message.");
+                        } else {
+                            String speak = "Boss, " + contactName + " has sent you a message.";
+                            VivaVoiceManager.getInstance().speak(context, speak);
+                        }
+                        abortBroadcast();
+                    }
                 }
             }
             catch (Exception ex) {
@@ -66,11 +84,11 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
             if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT);
                 Log.i(Global.TAG, "Notification event received: " + Utils.getApplicationName(context, event));
-                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), "Sir, I received a notification.");
+                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), context.getString(R.string.notification_received));
             } else if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED);
                 Log.i(Global.TAG, "Notification event removed: " + Utils.getApplicationName(context, event));
-                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), "Sir, notification has been removed.");
+                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), context.getString(R.string.notification_removed));
             }
         }
     }

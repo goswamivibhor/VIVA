@@ -20,6 +20,11 @@
     <string name="battery_string_part_2"> percent</string>
     <string name="weather_info_default">, I don\'t have any information on the weather. Will update you as soon as I have it.</string>
     <string name="weather_info_default_display">Weather information unavailable</string>
+    <string name="unable_to_understand">Boss, I wasn\'t able to understand what you said.</string>
+    <string name="notification_received">Boss, I received a notification.</string>
+    <string name="notification_removed">Boss, the notification has been removed.</string>
+    <string name="battery_low">Boss, we are running on backup power.</string>
+    <string name="unknown">Unknown</string>
     <string-array name="command_list">
         <item>Battery</item>
         <item>Call</item>

@@ -1,14 +1,21 @@
 package com.govibs.viva.utilities;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.media.AudioManager;
+import android.net.Uri;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
+import com.govibs.viva.R;
 import com.govibs.viva.global.Global;
 
 import java.text.SimpleDateFormat;
@@ -176,12 +183,74 @@ public class Utils {
         ApplicationInfo applicationInfo;
         try {
             applicationInfo = packageManager.getApplicationInfo(packageName, 0);
-            appName = (String) (applicationInfo != null ? packageManager.getApplicationLabel(applicationInfo) : "Unknown");
+            if (applicationInfo != null) {
+                appName = packageManager.getApplicationLabel(applicationInfo).toString();
+            } else {
+                appName = "Unknown";
+            }
+            //appName = (String) (applicationInfo != null ? packageManager.getApplicationLabel(applicationInfo) : "Unknown");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return appName;
     }
 
+
+    /***
+     * Check if the Phone in Silent mode and determine if Viva has to annoy.
+     * @param context - the calling application context
+     * @return True if in Silent mode, False otherwise.
+     */
+    public static boolean isPhoneInSilent(Context context) {
+        try {
+            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            switch (audioManager.getRingerMode()) {
+                case AudioManager.RINGER_MODE_SILENT:
+                    Log.i(Global.TAG, "Silent mode");
+                    return true;
+                case AudioManager.RINGER_MODE_VIBRATE:
+                    Log.i(Global.TAG, "Vibrate mode");
+                    return true;
+                case AudioManager.RINGER_MODE_NORMAL:
+                    Log.i(Global.TAG, "Normal mode");
+                    return false;
+                default:
+                    return false;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Get the contact name from contact number.
+     * @param context - the calling application context
+     * @param phoneNumber - the phone number which needs to be check against contact.
+     * @return the name of the contact from the phone number.
+     */
+    public static String getContactName(Context context, String phoneNumber) {
+        Cursor cursor = null;
+        String name = context.getString(R.string.unknown);
+        try {
+
+            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+            ContentResolver contentResolver = context.getContentResolver();
+            cursor = contentResolver.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+            if (cursor == null) {
+                return name;
+            }
+            if (cursor.moveToFirst()) {
+                name = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return name;
+    }
 
 }

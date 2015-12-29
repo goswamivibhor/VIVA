@@ -68,7 +68,7 @@ public class Conversation {
         message = message.toLowerCase(Locale.UK);
         if (message.toLowerCase().contains(CommandType.BATTERY.toString())
                 || message.toLowerCase().contains(CommandType.CALL.toString()) || message.toLowerCase().contains(CommandType.WEATHER.toString())
-                || message.toLowerCase().contains(CommandType.TIME.toString())) {
+                || message.toLowerCase().contains(CommandType.TIME.toString()) || message.toLowerCase().contains(CommandType.SEARCH.toString())) {
             status = true;
         }
         return status;
