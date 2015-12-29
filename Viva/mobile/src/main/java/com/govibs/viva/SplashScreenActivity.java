@@ -21,7 +21,7 @@ import com.govibs.viva.storage.VivaPreferenceHelper;
 public class SplashScreenActivity extends AppCompatActivity {
 
     private VivaInitializedBroadcast mVivaInitializedBroadcast = new VivaInitializedBroadcast();
-    boolean mInternetPermission = false, mGpsPermission = false, mSMSPermission = false;
+    boolean mInternetPermission = false, mGpsPermission = false, mSMSPermission = false, mReadContactPermission = false;
     private static final int REQ_INTERNET_PERMISSION = 1;
     private TextView tvSplashScreenInfo;
 
@@ -33,7 +33,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         VivaPreferenceHelper.setFirstTimeLaunch(this, true);
         VivaPreferenceHelper.setSetupComplete(this, false);
         tvSplashScreenInfo = (TextView) findViewById(R.id.tvSplashScreenInfo);
-
     }
 
     @Override
@@ -44,7 +43,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         mInternetPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED;
         mGpsPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         mSMSPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED;
-        if (mInternetPermission && mGpsPermission && mSMSPermission) {
+        mReadContactPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+        if (mInternetPermission && mGpsPermission && mSMSPermission && mReadContactPermission) {
             tvSplashScreenInfo.setVisibility(View.VISIBLE);
             VivaHandler.getInstance().initialize(SplashScreenActivity.this, SplashScreenActivity.this);
         } else {
@@ -53,7 +53,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.READ_SMS,
                     Manifest.permission.RECEIVE_SMS,
-                    Manifest.permission.SEND_SMS },
+                    Manifest.permission.SEND_SMS,
+                    Manifest.permission.READ_CONTACTS },
                     REQ_INTERNET_PERMISSION);
         }
     }
