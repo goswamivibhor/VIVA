@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaPreferenceHelper;
+import com.govibs.viva.ui.UIDisplayAdapter;
 import com.govibs.viva.utilities.Utils;
 import com.pascalwelsch.holocircularprogressbar.HoloCircularProgressBar;
 
@@ -31,7 +32,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private RelativeLayout rlConfiguredDashboard;
     private HoloCircularProgressBar holoCircularProgressBarBattery;
     private ArrayList<String> arrTextResponses = new ArrayList<>();
-    private ArrayAdapter<String> arrayAdapter;
+    private UIDisplayAdapter arrayAdapter;
     private ListView lvDashboardResults;
 
     @Override
@@ -162,7 +163,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 if (resultCode == RESULT_OK && data != null) {
                     arrTextResponses = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    arrayAdapter = new ArrayAdapter<>(DashboardActivity.this, android.R.layout.simple_list_item_1, arrTextResponses);
+                    arrayAdapter = new UIDisplayAdapter(DashboardActivity.this, R.layout.layout_list_text_view, arrTextResponses);
                     lvDashboardResults.setAdapter(arrayAdapter);
                     lvDashboardResults.invalidate();
                     for (String res : arrTextResponses) {

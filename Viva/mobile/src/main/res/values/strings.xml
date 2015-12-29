@@ -22,6 +22,7 @@
     <string name="action_settings">Settings</string>
     <string name="dashboard_battery_percentage">50</string>
     <string name="dashboard_commands">Commands</string>
+    <string name="dashboard_viva_heard">Interaction:</string>
     <string name="viva_listening">Listening&#8230;</string>
 
     <!-- Put your own APP ID here -->
