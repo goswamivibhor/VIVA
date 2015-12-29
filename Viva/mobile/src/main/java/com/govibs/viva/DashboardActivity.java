@@ -32,7 +32,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private RelativeLayout rlConfiguredDashboard;
     private HoloCircularProgressBar holoCircularProgressBarBattery;
     private ArrayList<String> arrTextResponses = new ArrayList<>();
-    private UIDisplayAdapter arrayAdapter;
     private ListView lvDashboardResults;
 
     @Override
@@ -163,7 +162,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 if (resultCode == RESULT_OK && data != null) {
                     arrTextResponses = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    arrayAdapter = new UIDisplayAdapter(DashboardActivity.this, R.layout.layout_list_text_view, arrTextResponses);
+                    UIDisplayAdapter arrayAdapter = new UIDisplayAdapter(DashboardActivity.this, R.layout.layout_list_text_view, arrTextResponses);
                     lvDashboardResults.setAdapter(arrayAdapter);
                     lvDashboardResults.invalidate();
                     for (String res : arrTextResponses) {
