@@ -26,6 +26,8 @@
     <string name="notification_removed">Boss, the notification has been removed.</string>
     <string name="battery_low">Boss, we are running on backup power.</string>
     <string name="unknown">Unknown</string>
+    <string name="notification_app_system">Android System</string>
+    <string name="notification_app_inbox">Inbox</string>
     <string-array name="command_list">
         <item>Battery</item>
         <item>Call</item>

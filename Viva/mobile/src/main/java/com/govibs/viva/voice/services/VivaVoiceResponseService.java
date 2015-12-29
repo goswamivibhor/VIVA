@@ -54,7 +54,7 @@ public class VivaVoiceResponseService extends IntentService {
             final String action = intent.getAction();
             if (ACTION_RESPOND.equals(action)) {
                 final String messageToSay = intent.getStringExtra(EXTRA_CONTENT);
-                mTextToSpeech = new TextToSpeech(mContext, new TextToSpeech.OnInitListener() {
+                mTextToSpeech = new TextToSpeech(mContext.getApplicationContext(), new TextToSpeech.OnInitListener() {
                     @Override
                     public void onInit(int i) {
                         handleActionRespond(messageToSay);
