@@ -5,9 +5,9 @@
     <string name="lets_begin">Let\'s begin!</string>
     <string name="status_init">Initializing&#8230;</string>
     <string name="voice_over_option_setup">Do you want me to ask you some questions aloud?</string>
-    <string name="question_name">What should I call you?</string>
+    <string name="question_name">I\'m VIVA, what\'s your name?</string>
     <string name="question_gender">Can I know your gender?</string>
-    <string name="question_notification">Can I speak if notifications such as email, messages, etc arrive?</string>
+    <string name="question_notification">Should I inform you of notifications such as email, messages, etc?</string>
     <string name="answer_male">Male</string>
     <string name="answer_female">Female</string>
     <string name="answer_call_by_name">Call you by your name</string>
@@ -28,6 +28,9 @@
     <string name="unknown">Unknown</string>
     <string name="notification_app_system">Android System</string>
     <string name="notification_app_inbox">Inbox</string>
+    <string name="notification_app_talk">Hangouts</string>
+    <string name="notification_app_google_apps">Google App</string>
+    <string name="question_call_recorder">Do you want to record your calls?</string>
     <string-array name="command_list">
         <item>Battery</item>
         <item>Call</item>

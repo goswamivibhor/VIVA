@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
 import com.govibs.viva.storage.VivaPreferenceHelper;
 
 public class SetupActivity extends AppCompatActivity implements View.OnFocusChangeListener {
@@ -32,6 +33,7 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
         setSupportActionBar(toolbar);
         isSetupVoiceOver = getIntent().getBooleanExtra(SETUP_VOICE_OVER, true);
         etSetupName = (EditText) findViewById(R.id.etSetupName);
+        etSetupName.setText(VivaPreferenceHelper.getCallSign(this));
         etSetupName.setOnFocusChangeListener(this);
         radioGroupCallSign = (RadioGroup) findViewById(R.id.rgrpGender);
         Switch switchSetupNotification = (Switch) findViewById(R.id.switchSetupNotification);
@@ -42,6 +44,14 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
                     Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
                     startActivity(intent);
                 }
+            }
+        });
+        Switch switchSetupCallRecord = (Switch) findViewById(R.id.switchSetupCallRecord);
+        switchSetupCallRecord.setChecked(VivaLibraryPreferenceHelper.isVivaCallRecordEnabled(this));
+        switchSetupCallRecord.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                VivaLibraryPreferenceHelper.setVivaCallRecordEnabled(SetupActivity.this, isChecked);
             }
         });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

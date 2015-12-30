@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.govibs.viva.global.Global;
+import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
 
 
 /**
@@ -40,10 +41,14 @@ public class VivaNotificationListenerService extends NotificationListenerService
         super.onNotificationPosted(sbn);
         Log.i(TAG, "****** Notification Posted");
         Log.i(TAG, "ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
-        Intent i = new  Intent(Global.ACTION_NOTIFICATION_SERVICE);
-        i.putExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT, sbn.getPackageName());
-        i.putExtra(Global.ACTION_ITEM_NOTIFICATION_TEXT, sbn.getNotification().tickerText);
-        getApplicationContext().sendBroadcast(i);
+        if (VivaLibraryPreferenceHelper.getVivaNotification(getApplicationContext()) == 0 ||
+                VivaLibraryPreferenceHelper.getVivaNotification(getApplicationContext()) != sbn.getId()) {
+            VivaLibraryPreferenceHelper.setVivaNotification(getApplicationContext(), sbn.getId());
+            Intent i = new  Intent(Global.ACTION_NOTIFICATION_SERVICE);
+            i.putExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT, sbn.getPackageName());
+            i.putExtra(Global.ACTION_ITEM_NOTIFICATION_TEXT, sbn.getNotification().tickerText);
+            sendBroadcast(i);
+        }
     }
 
     @Override

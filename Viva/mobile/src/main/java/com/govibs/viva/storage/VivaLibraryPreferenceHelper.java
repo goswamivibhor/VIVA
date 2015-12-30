@@ -36,6 +36,10 @@ public class VivaLibraryPreferenceHelper {
     private static final String VivaCurrentTemp = "VivaCurrentTemp";
     private static final String VivaCurrentWeatherState = "VivaCurrentWeatherState";
     private static final String VivaCurrentWindSpeed = "VivaCurrentWindSpeed";
+    private static final String VivaNotification = "VivaNotification";
+    private static final String VivaLastSentence = "VivaLastSentence";
+    private static final String VivaCallInProgress = "VivaCallInProgress";
+    private static final String VivaCallRecord = "VivaCallRecord";
 
 
     /**
@@ -214,6 +218,51 @@ public class VivaLibraryPreferenceHelper {
 
     public static float getVivaCurrentSpeed(Context context) {
         return getPreferences(context).getFloat(VivaCurrentWindSpeed, 0.0f);
+    }
+
+    public static void setVivaNotification(Context context, int notificationID) {
+        getPreferences(context).edit().putInt(VivaNotification, notificationID).apply();
+    }
+
+    public static int getVivaNotification(Context context) {
+        return getPreferences(context).getInt(VivaNotification, 0);
+    }
+
+    public static void setVivaLastSentence(Context context, String vivaLastSentence) {
+        getPreferences(context).edit().putString(VivaLastSentence, vivaLastSentence).apply();
+    }
+
+    public static boolean isVivaLastSentenceSame(Context context, String vivaLastSentence) {
+        String lastSentence = getVivaLastSentence(context);
+        if (!TextUtils.isEmpty(lastSentence)) {
+            if (vivaLastSentence.equalsIgnoreCase(lastSentence)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static String getVivaLastSentence(Context context) {
+        return getPreferences(context).getString(VivaLastSentence, null);
+    }
+
+    public static void setVivaCallInProgress(Context context, boolean callInProgress) {
+        getPreferences(context).edit().putBoolean(VivaCallInProgress, callInProgress).apply();
+    }
+
+    public static boolean isVivaCallInProgress(Context context) {
+        return getPreferences(context).getBoolean(VivaCallInProgress, false);
+    }
+
+    public static void setVivaCallRecordEnabled(Context context, boolean callRecord) {
+        getPreferences(context).edit().putBoolean(VivaCallRecord, callRecord).apply();
+    }
+
+    public static boolean isVivaCallRecordEnabled(Context context) {
+        return getPreferences(context).getBoolean(VivaCallRecord, false);
     }
 
 }

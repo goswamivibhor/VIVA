@@ -80,6 +80,17 @@
             android:textOff="@string/answer_notification_disable"
             android:textOn="@string/answer_notification_enable"/>
 
+        <Switch
+            android:id="@+id/switchSetupCallRecord"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/switchSetupNotification"
+            android:layout_alignParentStart="true"
+            android:text="@string/question_call_recorder"
+            android:textOn="@string/answer_notification_enable"
+            android:textOff="@string/answer_notification_disable"/>
+
     </RelativeLayout>
 
 </android.support.v4.widget.NestedScrollView>

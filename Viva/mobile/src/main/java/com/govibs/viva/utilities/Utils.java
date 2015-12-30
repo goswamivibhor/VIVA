@@ -11,6 +11,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -22,6 +23,7 @@ import com.govibs.viva.global.Global;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 /**
  * The utility class for generic utility methods.
@@ -269,6 +271,33 @@ public class Utils {
         } else {
             return context.getResources().getColor(android.R.color.holo_green_dark);
         }
+    }
+
+    /**
+     * Get the message that needs to be spoken depending on the app name.
+     * @param context - the calling application context
+     * @param appName - the name of the app.
+     * @param notificationText - the notification text.
+     * @return Message to speak.
+     */
+    public static String getMessageToSpeakForAppName(Context context, String appName, String notificationText) {
+        String msg = context.getString(R.string.notification_received) + appName;
+        try {
+            if (appName.equalsIgnoreCase(context.getString(R.string.notification_app_system))
+                    || appName.equalsIgnoreCase(context.getString(R.string.notification_app_google_apps))) {
+                if (!TextUtils.isEmpty(notificationText)) {
+                    msg = "Boss, " + notificationText;
+                }
+            } else if (appName.equalsIgnoreCase(context.getString(R.string.notification_app_inbox))) {
+                msg = "Boss, I have got an email.";
+            } else if (appName.equalsIgnoreCase(context.getString(R.string.notification_app_talk))) {
+                msg = "Boss, " + notificationText.split(Pattern.quote(":"))[0];
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        Log.i(Global.TAG, msg);
+        return msg;
     }
 
 }
