@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.provider.ContactsContract;
+import android.telephony.PhoneStateListener;
 import android.telephony.SmsMessage;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.govibs.viva.R;
@@ -100,6 +102,12 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
                 Log.i(Global.TAG, "Notification event removed: " + Utils.getApplicationName(context, event));
                 //VivaVoiceManager.getInstance().speak(context.getApplicationContext(), context.getString(R.string.notification_removed));
             }
+        }
+
+        if (intent.getAction().equalsIgnoreCase(TelephonyManager.ACTION_PHONE_STATE_CHANGED)) {
+            PhoneStateChangeListener phoneStateChangeListener = new PhoneStateChangeListener(context.getApplicationContext());
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            telephonyManager.listen(phoneStateChangeListener, PhoneStateListener.LISTEN_CALL_STATE);
         }
     }
 }

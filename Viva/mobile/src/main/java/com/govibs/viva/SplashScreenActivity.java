@@ -10,18 +10,22 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
 import com.govibs.viva.global.Global;
+import com.govibs.viva.receiver.PhoneStateChangeListener;
 import com.govibs.viva.storage.VivaPreferenceHelper;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
     private VivaInitializedBroadcast mVivaInitializedBroadcast = new VivaInitializedBroadcast();
-    boolean mInternetPermission = false, mGpsPermission = false, mSMSPermission = false, mReadContactPermission = false;
+    boolean mInternetPermission = false, mGpsPermission = false, mSMSPermission = false,
+            mReadContactPermission = false, mReadPhoneStatePermission = false;
     private static final int REQ_INTERNET_PERMISSION = 1;
     private TextView tvSplashScreenInfo;
 
@@ -44,6 +48,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         mGpsPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         mSMSPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED;
         mReadContactPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+        mReadPhoneStatePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
         if (mInternetPermission && mGpsPermission && mSMSPermission && mReadContactPermission) {
             tvSplashScreenInfo.setVisibility(View.VISIBLE);
             VivaHandler.getInstance().initialize(SplashScreenActivity.this, SplashScreenActivity.this);
@@ -54,7 +59,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                     Manifest.permission.READ_SMS,
                     Manifest.permission.RECEIVE_SMS,
                     Manifest.permission.SEND_SMS,
-                    Manifest.permission.READ_CONTACTS },
+                    Manifest.permission.READ_CONTACTS,
+                    Manifest.permission.READ_PHONE_STATE },
                     REQ_INTERNET_PERMISSION);
         }
     }
@@ -86,8 +92,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED
                         && grantResults[2] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
-
+                        && grantResults[3] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[4] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay!
                     tvSplashScreenInfo.setVisibility(View.VISIBLE);
                     VivaHandler.getInstance().initialize(SplashScreenActivity.this, SplashScreenActivity.this);

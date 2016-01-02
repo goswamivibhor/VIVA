@@ -69,9 +69,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void run() {
                 if (VivaPreferenceHelper.isFirstTimeLaunch(DashboardActivity.this)) {
-                    VivaHandler.getInstance().speak(DashboardActivity.this, getString(R.string.hey_there));
-                    mFloatingActionButton.setTag("Start");
-                    VivaPreferenceHelper.setFirstTimeLaunch(DashboardActivity.this, false);
+                    startSetupActivity(false);
                 }
                 String info = VivaHandler.getInstance().getWeatherInformation(DashboardActivity.this);
                 if (!info.equalsIgnoreCase(getString(R.string.weather_info_default))) {
@@ -123,18 +121,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(DashboardActivity.this, SetupActivity.class);
-                                intent.putExtra(SetupActivity.SETUP_VOICE_OVER, true);
-                                startActivityForResult(intent, REQUEST_SETUP);
+                                startSetupActivity(true);
                             }
                         },
                         "Nope",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(DashboardActivity.this, SetupActivity.class);
-                                intent.putExtra(SetupActivity.SETUP_VOICE_OVER, false);
-                                startActivityForResult(intent, REQUEST_SETUP);
+                                startSetupActivity(false);
                             }
                         });
                 break;
@@ -150,6 +144,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         switch (requestCode) {
             case REQUEST_SETUP:
                 if (resultCode == RESULT_OK) {
+                    VivaHandler.getInstance().speak(DashboardActivity.this, getString(R.string.hey_there));
+                    mFloatingActionButton.setTag("Start");
+                    VivaPreferenceHelper.setFirstTimeLaunch(DashboardActivity.this, false);
                     tvInfoMessage.setVisibility(View.GONE);
                     rlConfiguredDashboard.setVisibility(View.VISIBLE);
                     VivaPreferenceHelper.setSetupComplete(DashboardActivity.this, true);
@@ -190,18 +187,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(DashboardActivity.this, SetupActivity.class);
-                            intent.putExtra(SetupActivity.SETUP_VOICE_OVER, true);
-                            startActivityForResult(intent, REQUEST_SETUP);
+                            startSetupActivity(true);
                         }
                     },
                     "Nope",
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(DashboardActivity.this, SetupActivity.class);
-                            intent.putExtra(SetupActivity.SETUP_VOICE_OVER, false);
-                            startActivityForResult(intent, REQUEST_SETUP);
+                            startSetupActivity(false);
                         }
                     });
 
@@ -229,5 +222,15 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private void listenForRequest(String header) {
         startActivityForResult(VivaHandler.getInstance().startListening(DashboardActivity.this, header),
                 VivaHandler.VIVA_VOICE_RECOGNITION_REQUEST);
+    }
+
+    /**
+     * Start setup activity.
+     * @param flag - the flag for determining if voice over is required.
+     */
+    private void startSetupActivity(boolean flag) {
+        Intent intent = new Intent(DashboardActivity.this, SetupActivity.class);
+        intent.putExtra(SetupActivity.SETUP_VOICE_OVER, flag);
+        startActivityForResult(intent, REQUEST_SETUP);
     }
 }
