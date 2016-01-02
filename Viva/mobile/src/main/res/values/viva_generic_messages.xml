@@ -20,11 +20,11 @@
     <string name="battery_string_part_2"> percent</string>
     <string name="weather_info_default">, I don\'t have any information on the weather. Will update you as soon as I have it.</string>
     <string name="weather_info_default_display">Weather information unavailable</string>
-    <string name="unable_to_understand">Boss, I wasn\'t able to understand what you said.</string>
-    <string name="notification_received">Boss, I received a notification from </string>
-    <string name="notification_received_unknown">Boss, I received an unknown notification.</string>
-    <string name="notification_removed">Boss, the notification has been removed.</string>
-    <string name="battery_low">Boss, we are running on backup power.</string>
+    <string name="unable_to_understand">, I wasn\'t able to understand what you said.</string>
+    <string name="notification_received">, I received a notification from </string>
+    <string name="notification_received_unknown">, I received an unknown notification.</string>
+    <string name="notification_removed">, the notification has been removed.</string>
+    <string name="battery_low">, we are running on backup power.</string>
     <string name="unknown">Unknown</string>
     <string name="notification_app_system">Android System</string>
     <string name="notification_app_inbox">Inbox</string>

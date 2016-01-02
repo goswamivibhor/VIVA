@@ -15,6 +15,7 @@ import android.util.Log;
 import com.govibs.viva.R;
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
+import com.govibs.viva.storage.VivaPreferenceHelper;
 import com.govibs.viva.utilities.Utils;
 import com.govibs.viva.voice.VivaVoiceManager;
 
@@ -45,7 +46,8 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
             float batteryPct = (level / (float)scale) * 100;
             Log.i(Global.TAG, "Battery Percentage: " + batteryPct);
             if (batteryPct <= 15) {
-                VivaVoiceManager.getInstance().speak(context, context.getString(R.string.battery_low));
+                VivaVoiceManager.getInstance().speak(context, VivaPreferenceHelper.getCallSign(context)
+                        + context.getString(R.string.battery_low));
             }
             VivaLibraryPreferenceHelper.setBatteryStatus(context, isCharging,
                     usbCharge, acCharge, batteryPct);
@@ -70,7 +72,8 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
                         if (contactName.equalsIgnoreCase(context.getString(R.string.unknown))) {
                             VivaVoiceManager.getInstance().speak(context.getApplicationContext(), "I received a message.");
                         } else {
-                            String speak = "Boss, " + contactName + " has sent you a message.";
+                            String speak = VivaPreferenceHelper.getCallSign(context)
+                                    + ", " + contactName + " has sent you a message.";
                             VivaVoiceManager.getInstance().speak(context, speak);
                         }
                         abortBroadcast();
@@ -89,7 +92,7 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
                 Log.i(Global.TAG, "Notification event received: " + appName);
                 String speak;
                 if (appName.equalsIgnoreCase(context.getString(R.string.unknown))) {
-                    speak = context.getString(R.string.notification_received_unknown);
+                    speak = VivaPreferenceHelper.getCallSign(context) + context.getString(R.string.notification_received_unknown);
                 } else {
                     speak = Utils.getMessageToSpeakForAppName(context, appName, intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_TEXT));
                 }

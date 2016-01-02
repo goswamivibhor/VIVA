@@ -72,7 +72,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                     startSetupActivity(false);
                 }
                 String info = VivaHandler.getInstance().getWeatherInformation(DashboardActivity.this);
-                if (!info.equalsIgnoreCase(getString(R.string.weather_info_default))) {
+                if (!info.equalsIgnoreCase(VivaPreferenceHelper.getCallSign(DashboardActivity.this) + getString(R.string.weather_info_default))) {
                     tvDashboardWeatherInfo.setText(info);
                 } else {
                     tvDashboardWeatherInfo.setText(R.string.weather_info_default_display);
@@ -161,7 +161,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> arrTextResponses = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    UIDisplayAdapter arrayAdapter = new UIDisplayAdapter(DashboardActivity.this, R.layout.layout_list_text_view, arrTextResponses);
+                    UIDisplayAdapter arrayAdapter = new UIDisplayAdapter(DashboardActivity.this,
+                            R.layout.layout_list_text_view, arrTextResponses);
                     lvDashboardResults.setAdapter(arrayAdapter);
                     lvDashboardResults.invalidate();
                     for (String res : arrTextResponses) {
