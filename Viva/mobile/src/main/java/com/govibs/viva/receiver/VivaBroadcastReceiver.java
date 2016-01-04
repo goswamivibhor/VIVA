@@ -53,7 +53,11 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
                     usbCharge, acCharge, batteryPct);
         }
 
-        if (intent.getAction().equalsIgnoreCase(Global.ACTION_NOTIFICATION_SERVICE)) {
+        if (intent.getAction().equalsIgnoreCase(TelephonyManager.ACTION_PHONE_STATE_CHANGED)) {
+            PhoneStateChangeListener phoneStateChangeListener = new PhoneStateChangeListener(context.getApplicationContext());
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            telephonyManager.listen(phoneStateChangeListener, PhoneStateListener.LISTEN_CALL_STATE);
+        } else if (intent.getAction().equalsIgnoreCase(Global.ACTION_NOTIFICATION_SERVICE)) {
             if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT);
                 String appName = Utils.getApplicationName(context, event);
@@ -102,10 +106,6 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
                 }
             }
 
-        if (intent.getAction().equalsIgnoreCase(TelephonyManager.ACTION_PHONE_STATE_CHANGED)) {
-            PhoneStateChangeListener phoneStateChangeListener = new PhoneStateChangeListener(context.getApplicationContext());
-            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            telephonyManager.listen(phoneStateChangeListener, PhoneStateListener.LISTEN_CALL_STATE);
-        }
+
     }
 }
