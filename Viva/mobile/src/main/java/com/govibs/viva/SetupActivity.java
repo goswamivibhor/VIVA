@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
@@ -35,10 +36,11 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
         setSupportActionBar(toolbar);
         isSetupVoiceOver = getIntent().getBooleanExtra(SETUP_VOICE_OVER, true);
         etSetupName = (EditText) findViewById(R.id.etSetupName);
-        etSetupName.setText(VivaPreferenceHelper.getCallSign(this));
+        etSetupName.setText(VivaPreferenceHelper.getMasterName(this));
         etSetupName.setOnFocusChangeListener(this);
         radioGroupCallSign = (RadioGroup) findViewById(R.id.rgrpGender);
         Switch switchSetupNotification = (Switch) findViewById(R.id.switchSetupNotification);
+        switchSetupNotification.setChecked(VivaPreferenceHelper.isNotificationListeningEnabled(this));
         switchSetupNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -60,6 +62,9 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
         int amStreamMusicMaxVol = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         int amStreamCurrentVol = VivaLibraryPreferenceHelper.getVivaVolume(this);
         SeekBar seekBarVolume = (SeekBar) findViewById(R.id.seekVivaVolume);
+        final TextView textViewVolume = (TextView) findViewById(R.id.tvSetupVivaVolume);
+        String vol = getString(R.string.viva_volume) + ": " + VivaLibraryPreferenceHelper.getVivaVolume(this);
+        textViewVolume.setText(vol);
         seekBarVolume.setMax(amStreamMusicMaxVol);
         seekBarVolume.setProgress(amStreamCurrentVol);
         seekBarVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -67,6 +72,8 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     VivaLibraryPreferenceHelper.setVivaVolume(SetupActivity.this, progress);
+                    String vol = getString(R.string.viva_volume) + ": " + progress;
+                    textViewVolume.setText(vol);
                 }
             }
 
@@ -90,6 +97,13 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (etSetupName.getEditableText() != null && etSetupName.getEditableText().length() > 0) {
+            setResult(RESULT_OK);
+        }
+        finish();
+    }
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
@@ -114,6 +128,7 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
     private void validate() {
         if (etSetupName.getEditableText() != null && etSetupName.getEditableText().length() > 0) {
             VivaPreferenceHelper.setCallSign(SetupActivity.this, getCallSign());
+            VivaPreferenceHelper.setMasterName(SetupActivity.this, etSetupName.getEditableText().toString());
             setResult(RESULT_OK);
             finish();
         } else {

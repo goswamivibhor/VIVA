@@ -3,10 +3,13 @@ package com.govibs.viva.receiver;
 import android.content.Context;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
+import com.govibs.viva.utilities.Utils;
+import com.govibs.viva.voice.VivaVoiceManager;
 
 /**
  * The phone state has changed.
@@ -26,6 +29,12 @@ public class PhoneStateChangeListener extends PhoneStateListener {
             case TelephonyManager.CALL_STATE_RINGING:
                 Log.i(Global.TAG, "RINGING");
                 VivaLibraryPreferenceHelper.setVivaCallInProgress(mContext, true);
+                String contactName = Utils.getContactName(mContext, incomingNumber);
+                if (!TextUtils.isEmpty(contactName)) {
+                    String info = "Incoming call from " + contactName;
+                    Log.i(Global.TAG, info);
+                    VivaVoiceManager.getInstance().speak(mContext.getApplicationContext(), info);
+                }
                 break;
 
             case TelephonyManager.CALL_STATE_OFFHOOK:

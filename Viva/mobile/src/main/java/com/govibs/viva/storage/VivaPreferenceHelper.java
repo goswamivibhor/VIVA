@@ -13,6 +13,8 @@ public class VivaPreferenceHelper {
     private static final String FirstTimeLaunch = "FirstTimeLaunch";
     private static final String Setup = "VivaSetup";
     private static final String CallSign = "VivaCallSign";
+    private static final String MasterName = "MasterName";
+    private static final String NotificationListening = "NotificationListener";
 
     private VivaPreferenceHelper() {
     }
@@ -48,6 +50,22 @@ public class VivaPreferenceHelper {
 
     public static String getCallSign(Context context) {
         return getPreferences(context).getString(CallSign, "Boss");
+    }
+
+    public static void setMasterName(Context context, String masterName) {
+        getPreferences(context).edit().putString(MasterName, masterName).apply();
+    }
+
+    public static String getMasterName(Context context) {
+        return getPreferences(context).getString(MasterName, getCallSign(context));
+    }
+
+    public static void setNotificationListeningEnabled(Context context, boolean status) {
+        getPreferences(context).edit().putBoolean(NotificationListening, status).apply();
+    }
+
+    public static boolean isNotificationListeningEnabled(Context context) {
+        return getPreferences(context).getBoolean(NotificationListening, false);
     }
 
 }

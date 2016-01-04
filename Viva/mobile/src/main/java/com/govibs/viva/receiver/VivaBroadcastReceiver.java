@@ -43,7 +43,7 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
-            float batteryPct = (level / (float)scale) * 100;
+            float batteryPct = (level / (float) scale) * 100;
             Log.i(Global.TAG, "Battery Percentage: " + batteryPct);
             if (batteryPct <= 15) {
                 VivaVoiceManager.getInstance().speak(context, VivaPreferenceHelper.getCallSign(context)
@@ -78,33 +78,32 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
                 //VivaVoiceManager.getInstance().speak(context.getApplicationContext(), context.getString(R.string.notification_removed));
             }
         } else if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
-                try {
-                    Object[] rawMsgs=(Object[])intent.getExtras().get("pdus");
-                    if (rawMsgs != null) {
-                        for (Object raw : rawMsgs) {
-                            SmsMessage msg = SmsMessage.createFromPdu((byte[]) raw);
-                            Log.i(Global.TAG, "Address: " + msg.getOriginatingAddress() + " Body: " + msg.getMessageBody());
-                            // TODO Check in contact list if this address is present. Pass this on to the CPU.
+            try {
+                Object[] rawMsgs = (Object[]) intent.getExtras().get("pdus");
+                if (rawMsgs != null) {
+                    for (Object raw : rawMsgs) {
+                        SmsMessage msg = SmsMessage.createFromPdu((byte[]) raw);
+                        Log.i(Global.TAG, "Address: " + msg.getOriginatingAddress() + " Body: " + msg.getMessageBody());
+                        // TODO Check in contact list if this address is present. Pass this on to the CPU.
                     /*Intent intentJarvisCPU = new Intent(context, JarvisCPU.class);
                     intentJarvisCPU.setAction(JarvisCPU.JARVIS_SMS_RECEIVED);
                     intentJarvisCPU.putExtra(JarvisCPU.JARVIS_SMS_RECEIVED, msg.getOriginatingAddress() + "|" + msg.getMessageBody());
                     context.startService(intentJarvisCPU);*/
-                            String contactName = Utils.getContactName(context, msg.getOriginatingAddress());
-                            if (contactName.equalsIgnoreCase(context.getString(R.string.unknown))) {
-                                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), "I received a message.");
-                            } else {
-                                String speak = VivaPreferenceHelper.getCallSign(context)
-                                        + ", " + contactName + " has sent you a message.";
-                                VivaVoiceManager.getInstance().speak(context, speak);
-                            }
-                            abortBroadcast();
+                        String contactName = Utils.getContactName(context, msg.getOriginatingAddress());
+                        if (contactName.equalsIgnoreCase(context.getString(R.string.unknown))) {
+                            VivaVoiceManager.getInstance().speak(context.getApplicationContext(), "I received a message.");
+                        } else {
+                            String speak = VivaPreferenceHelper.getCallSign(context)
+                                    + ", " + contactName + " has sent you a message.";
+                            VivaVoiceManager.getInstance().speak(context, speak);
                         }
+                        abortBroadcast();
                     }
                 }
-                catch (Exception ex) {
-                    Log.e(Global.TAG, "Exception in reading sms. " + ex.getMessage());
-                }
+            } catch (Exception ex) {
+                Log.e(Global.TAG, "Exception in reading sms. " + ex.getMessage());
             }
+        }
 
 
     }
