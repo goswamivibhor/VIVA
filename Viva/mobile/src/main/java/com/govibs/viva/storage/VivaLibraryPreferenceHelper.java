@@ -3,6 +3,7 @@ package com.govibs.viva.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.media.AudioManager;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
@@ -40,6 +41,7 @@ public class VivaLibraryPreferenceHelper {
     private static final String VivaLastSentence = "VivaLastSentence";
     private static final String VivaCallInProgress = "VivaCallInProgress";
     private static final String VivaCallRecord = "VivaCallRecord";
+    private static final String VivaVolume = "VivaVolume";
 
 
     /**
@@ -263,6 +265,18 @@ public class VivaLibraryPreferenceHelper {
 
     public static boolean isVivaCallRecordEnabled(Context context) {
         return getPreferences(context).getBoolean(VivaCallRecord, false);
+    }
+
+    public static void setVivaVolume(Context context, int volume) {
+        AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        am.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
+        getPreferences(context).edit().putInt(VivaVolume, volume).apply();
+    }
+
+    public static int getVivaVolume(Context context) {
+        AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        int amStreamMusicVol = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        return getPreferences(context).getInt(VivaVolume, amStreamMusicVol);
     }
 
 }

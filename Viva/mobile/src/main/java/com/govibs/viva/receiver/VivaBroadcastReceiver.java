@@ -52,38 +52,6 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
             VivaLibraryPreferenceHelper.setBatteryStatus(context, isCharging,
                     usbCharge, acCharge, batteryPct);
         }
-        /**
-         * This segment receiver the SMS.
-         * @author Vibhor
-         */
-        if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
-            try {
-                Object[] rawMsgs=(Object[])intent.getExtras().get("pdus");
-                if (rawMsgs != null) {
-                    for (Object raw : rawMsgs) {
-                        SmsMessage msg = SmsMessage.createFromPdu((byte[]) raw);
-                        Log.i(Global.TAG, "Address: " + msg.getOriginatingAddress() + " Body: " + msg.getMessageBody());
-                        // TODO Check in contact list if this address is present. Pass this on to the CPU.
-                    /*Intent intentJarvisCPU = new Intent(context, JarvisCPU.class);
-                    intentJarvisCPU.setAction(JarvisCPU.JARVIS_SMS_RECEIVED);
-                    intentJarvisCPU.putExtra(JarvisCPU.JARVIS_SMS_RECEIVED, msg.getOriginatingAddress() + "|" + msg.getMessageBody());
-                    context.startService(intentJarvisCPU);*/
-                        String contactName = Utils.getContactName(context, msg.getOriginatingAddress());
-                        if (contactName.equalsIgnoreCase(context.getString(R.string.unknown))) {
-                            VivaVoiceManager.getInstance().speak(context.getApplicationContext(), "I received a message.");
-                        } else {
-                            String speak = VivaPreferenceHelper.getCallSign(context)
-                                    + ", " + contactName + " has sent you a message.";
-                            VivaVoiceManager.getInstance().speak(context, speak);
-                        }
-                        abortBroadcast();
-                    }
-                }
-            }
-            catch (Exception ex) {
-                Log.e(Global.TAG, "Exception in reading sms. " + ex.getMessage());
-            }
-        }
 
         if (intent.getAction().equalsIgnoreCase(Global.ACTION_NOTIFICATION_SERVICE)) {
             if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT)) {
@@ -105,7 +73,34 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
                 Log.i(Global.TAG, "Notification event removed: " + Utils.getApplicationName(context, event));
                 //VivaVoiceManager.getInstance().speak(context.getApplicationContext(), context.getString(R.string.notification_removed));
             }
-        }
+        } else if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
+                try {
+                    Object[] rawMsgs=(Object[])intent.getExtras().get("pdus");
+                    if (rawMsgs != null) {
+                        for (Object raw : rawMsgs) {
+                            SmsMessage msg = SmsMessage.createFromPdu((byte[]) raw);
+                            Log.i(Global.TAG, "Address: " + msg.getOriginatingAddress() + " Body: " + msg.getMessageBody());
+                            // TODO Check in contact list if this address is present. Pass this on to the CPU.
+                    /*Intent intentJarvisCPU = new Intent(context, JarvisCPU.class);
+                    intentJarvisCPU.setAction(JarvisCPU.JARVIS_SMS_RECEIVED);
+                    intentJarvisCPU.putExtra(JarvisCPU.JARVIS_SMS_RECEIVED, msg.getOriginatingAddress() + "|" + msg.getMessageBody());
+                    context.startService(intentJarvisCPU);*/
+                            String contactName = Utils.getContactName(context, msg.getOriginatingAddress());
+                            if (contactName.equalsIgnoreCase(context.getString(R.string.unknown))) {
+                                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), "I received a message.");
+                            } else {
+                                String speak = VivaPreferenceHelper.getCallSign(context)
+                                        + ", " + contactName + " has sent you a message.";
+                                VivaVoiceManager.getInstance().speak(context, speak);
+                            }
+                            abortBroadcast();
+                        }
+                    }
+                }
+                catch (Exception ex) {
+                    Log.e(Global.TAG, "Exception in reading sms. " + ex.getMessage());
+                }
+            }
 
         if (intent.getAction().equalsIgnoreCase(TelephonyManager.ACTION_PHONE_STATE_CHANGED)) {
             PhoneStateChangeListener phoneStateChangeListener = new PhoneStateChangeListener(context.getApplicationContext());

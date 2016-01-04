@@ -91,6 +91,24 @@
             android:textOn="@string/answer_notification_enable"
             android:textOff="@string/answer_notification_disable"/>
 
+        <TextView
+            android:id="@+id/tvSetupVivaVolume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/viva_volume"
+            android:layout_below="@+id/switchSetupCallRecord"
+            android:layout_alignParentStart="true"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"/>
+
+        <SeekBar
+            android:id="@+id/seekVivaVolume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSetupVivaVolume"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentStart="true"/>
+
     </RelativeLayout>
 
 </android.support.v4.widget.NestedScrollView>

@@ -1,6 +1,7 @@
 package com.govibs.viva;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -52,6 +54,30 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 VivaLibraryPreferenceHelper.setVivaCallRecordEnabled(SetupActivity.this, isChecked);
+            }
+        });
+        AudioManager am = (AudioManager)getSystemService(AUDIO_SERVICE);
+        int amStreamMusicMaxVol = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int amStreamCurrentVol = VivaLibraryPreferenceHelper.getVivaVolume(this);
+        SeekBar seekBarVolume = (SeekBar) findViewById(R.id.seekVivaVolume);
+        seekBarVolume.setMax(amStreamMusicMaxVol);
+        seekBarVolume.setProgress(amStreamCurrentVol);
+        seekBarVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    VivaLibraryPreferenceHelper.setVivaVolume(SetupActivity.this, progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
