@@ -48,6 +48,7 @@ public class PhoneStateChangeListener extends PhoneStateListener {
                 // this should be the last piece of code before the break
                 VivaLibraryPreferenceHelper.setVivaCallInProgress(mContext, true);
                 break;
+
             case TelephonyManager.CALL_STATE_IDLE:
                 Log.i(Global.TAG, "IDLE");
                 // this should be the last piece of code before the break

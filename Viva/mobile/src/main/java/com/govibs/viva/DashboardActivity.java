@@ -71,12 +71,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 if (VivaPreferenceHelper.isFirstTimeLaunch(DashboardActivity.this)) {
                     startSetupActivity(false);
                 }
-                String info = VivaHandler.getInstance().getWeatherInformation(DashboardActivity.this);
-                if (!info.equalsIgnoreCase(VivaPreferenceHelper.getCallSign(DashboardActivity.this) + getString(R.string.weather_info_default))) {
-                    tvDashboardWeatherInfo.setText(info);
-                } else {
-                    tvDashboardWeatherInfo.setText(R.string.weather_info_default_display);
-                }
             }
         }, 2000);
         float batteryPercentage = VivaHandler.getInstance().getBatteryPercentage(DashboardActivity.this);
@@ -87,6 +81,12 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             holoCircularProgressBarBattery.setProgressColor(Utils.getColorForBattery(DashboardActivity.this, batteryPercentage));
             String battery = (int) batteryPercentage + "%";
             tvDashboardBatteryPercentage.setText(battery);
+        }
+        String info = VivaHandler.getInstance().getWeatherInformation(DashboardActivity.this);
+        if (!info.equalsIgnoreCase(VivaPreferenceHelper.getCallSign(DashboardActivity.this) + getString(R.string.weather_info_default))) {
+            tvDashboardWeatherInfo.setText(info);
+        } else {
+            tvDashboardWeatherInfo.setText(R.string.weather_info_default_display);
         }
     }
 
@@ -181,7 +181,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
      */
     private void performSetup() {
         if (mFloatingActionButton.getTag().equals("Start") &&
-                VivaPreferenceHelper.isSetupComplete(DashboardActivity.this)) {
+                !VivaPreferenceHelper.isSetupComplete(DashboardActivity.this)) {
             mFloatingActionButton.setTag("Speak");
             Utils.showDialogWithButton(DashboardActivity.this, getString(R.string.voice_over_option_setup),
                     "Okay",
