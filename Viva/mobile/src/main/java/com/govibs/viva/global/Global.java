@@ -36,9 +36,9 @@ public class Global {
     public static final  int VOICE_RECOGNITION_REQUEST_CODE = 2403;
 
     /**
-     * 1 hour location update.
+     * 15 minutes location update.
      */
-    public static final long TIME_LOCATION_UPDATE = 60 * 60 * 1000;
+    public static final long TIME_LOCATION_UPDATE = 15 * 60 * 1000;
 
 
 }

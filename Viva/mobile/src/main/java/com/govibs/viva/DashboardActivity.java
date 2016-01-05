@@ -83,7 +83,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             tvDashboardBatteryPercentage.setText(battery);
         }
         String info = VivaHandler.getInstance().getWeatherInformation(DashboardActivity.this);
-        if (!info.equalsIgnoreCase(VivaPreferenceHelper.getCallSign(DashboardActivity.this) + getString(R.string.weather_info_default))) {
+        if (!info.equalsIgnoreCase(VivaPreferenceHelper.getCallSign(DashboardActivity.this) +
+                getString(R.string.weather_info_default))) {
             tvDashboardWeatherInfo.setText(info);
         } else {
             tvDashboardWeatherInfo.setText(R.string.weather_info_default_display);
