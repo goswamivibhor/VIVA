@@ -174,6 +174,25 @@ public class Utils {
         }
     }
 
+    public static String convertCurrentTimeMillsToDisplayTime(long currentTimeMills) {
+        Calendar calendar = Calendar.getInstance(Global.VIVA_LOCALE);
+        calendar.setTimeInMillis(currentTimeMills);
+        SimpleDateFormat sdfDisplay = new SimpleDateFormat("MMM-dd-yyyy HH:mm a", Global.VIVA_LOCALE);
+        return sdfDisplay.format(calendar.getTime());
+    }
+
+    public static long convertCurrentDisplayTimeToMills(String currentTime) {
+        long currentTimeMills = System.currentTimeMillis();
+        try {
+            Calendar calendar = Calendar.getInstance(Global.VIVA_LOCALE);
+            SimpleDateFormat sdfDisplay = new SimpleDateFormat("MMM-dd-yyyy HH:mm a", Global.VIVA_LOCALE);
+            calendar.setTime(sdfDisplay.parse(currentTime));
+            currentTimeMills = calendar.getTimeInMillis();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return currentTimeMills;
+    }
 
     /**
      * Get the application name from package name.

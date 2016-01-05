@@ -3,6 +3,7 @@ package com.govibs.viva.voice;
 import android.content.Context;
 
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
+import com.govibs.viva.storage.VivaPreferenceHelper;
 import com.govibs.viva.utilities.Utils;
 import com.govibs.viva.voice.services.VivaVoiceResponseService;
 
@@ -23,7 +24,7 @@ public class VivaVoiceManager {
     }
 
     public void speak(Context context, String messageToSpeak) {
-        if (!Utils.isPhoneInSilent(context)) {
+        if (!Utils.isPhoneInSilent(context) && !VivaPreferenceHelper.isVivaDNDTime(context)) {
             if (!VivaLibraryPreferenceHelper.isVivaLastSentenceSame(context, messageToSpeak)) {
                 VivaLibraryPreferenceHelper.setVivaLastSentence(context, messageToSpeak);
                 VivaVoiceResponseService.startActionRespond(context, messageToSpeak);

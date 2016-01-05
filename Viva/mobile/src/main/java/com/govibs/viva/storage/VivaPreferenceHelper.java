@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.govibs.viva.utilities.Utils;
+
+import java.util.regex.Pattern;
+
 /**
  * The preference helper for storage.
  * Created by Vibhor on 12/8/15.
@@ -15,6 +19,7 @@ public class VivaPreferenceHelper {
     private static final String CallSign = "VivaCallSign";
     private static final String MasterName = "MasterName";
     private static final String NotificationListening = "NotificationListener";
+    private static final String VivaDNDTime = "VivaDNDTime";
 
     private VivaPreferenceHelper() {
     }
@@ -67,5 +72,17 @@ public class VivaPreferenceHelper {
     public static boolean isNotificationListeningEnabled(Context context) {
         return getPreferences(context).getBoolean(NotificationListening, false);
     }
+
+    public static void setVivaDNDTime(Context context, String vivaDNDTime) {
+        getPreferences(context).edit().putString(VivaDNDTime, vivaDNDTime).apply();
+    }
+
+    public static boolean isVivaDNDTime(Context context) {
+        long currentTime = System.currentTimeMillis();
+        String[] dndTime = getPreferences(context).getString(VivaDNDTime, currentTime + "|" + currentTime).split(Pattern.quote("|"));
+        long endDNDTime = Utils.convertCurrentDisplayTimeToMills(dndTime[1]);
+        return (currentTime < endDNDTime);
+    }
+
 
 }

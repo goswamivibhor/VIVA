@@ -6,6 +6,10 @@ import android.location.Location;
 import android.media.AudioManager;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.govibs.viva.global.Global;
+import com.govibs.viva.utilities.Utils;
 
 import org.json.JSONObject;
 
@@ -42,6 +46,7 @@ public class VivaLibraryPreferenceHelper {
     private static final String VivaCallInProgress = "VivaCallInProgress";
     private static final String VivaCallRecord = "VivaCallRecord";
     private static final String VivaVolume = "VivaVolume";
+    private static final String VivaNotificationTime = "VivaNotificationTime";
 
 
     /**
@@ -277,6 +282,16 @@ public class VivaLibraryPreferenceHelper {
         AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         int amStreamMusicVol = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         return getPreferences(context).getInt(VivaVolume, amStreamMusicVol);
+    }
+
+    public static void setVivaNotificationTime(Context context, long notificationTime) {
+        getPreferences(context).edit().putLong(VivaNotificationTime, notificationTime).apply();
+        Log.d(Global.TAG, "Notification time: " + Utils.convertCurrentTimeMillsToDisplayTime(notificationTime));
+    }
+
+    public static boolean isInVivaNotificationTimeFrame(Context context, long notificationTime) {
+        long lastNotificationTime = getPreferences(context).getLong(VivaNotificationTime, notificationTime);
+        return  ((notificationTime - lastNotificationTime) <= 3);
     }
 
 }
