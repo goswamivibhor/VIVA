@@ -68,10 +68,8 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
                 } else {
                     speak = Utils.getMessageToSpeakForAppName(context, appName, intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_TEXT));
                 }
-                if (!VivaLibraryPreferenceHelper.isVivaLastSentenceSame(context, speak)) {
-                    VivaLibraryPreferenceHelper.setVivaLastSentence(context, speak);
-                    VivaVoiceManager.getInstance().speak(context.getApplicationContext(), speak);
-                }
+                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), speak);
+
             } else if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED);
                 Log.i(Global.TAG, "Notification event removed: " + Utils.getApplicationName(context, event));
