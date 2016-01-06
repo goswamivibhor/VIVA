@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -86,8 +87,12 @@ public class WeatherIntentService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_FETCH_CITY_WEATHER.equals(action)) {
-                final String cityName = intent.getStringExtra(EXTRA_CITY_ADDRESS);
-                handleActionFetchWeather(cityName);
+                try {
+                    final String cityName = URLEncoder.encode(intent.getStringExtra(EXTRA_CITY_ADDRESS), "UTF-8");
+                    handleActionFetchWeather(cityName);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             } else if (ACTION_FETCH_CITY.equals(action)) {
                 final double param1 = intent.getDoubleExtra(EXTRA_LATITUDE, 0);
                 final double param2 = intent.getDoubleExtra(EXTRA_LONGITUDE, 0);
@@ -136,7 +141,7 @@ public class WeatherIntentService extends IntentService {
                 String windSpeed = (int)jsonObject.getJSONObject("wind").getDouble("speed") + "";
                 JSONObject weatherObject = jsonObject.getJSONArray("weather").getJSONObject(0);
                 String weather = weatherObject.getString("description");
-                String vivaSay = weather + " with " + temperature + " degrees Celsius in " + cityName + ". Wind speed is " + windSpeed + " miles per hour.";
+                String vivaSay = weather + " with " + temperature + " \u2103 in " + cityName + ". Wind is " + windSpeed + " miles per hour.";
                 VivaLibraryPreferenceHelper.saveIrisWeatherInfo(mContext, vivaSay);
                 VivaLibraryPreferenceHelper.setVivaCurrentTemp(mContext, Float.parseFloat(temperature));
                 VivaLibraryPreferenceHelper.setVivaCurrentWindSpeed(mContext, Float.parseFloat(windSpeed));
@@ -161,8 +166,8 @@ public class WeatherIntentService extends IntentService {
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             String cityName = "", countryName = "";
             for (Address address : addresses) {
-                cityName = address.getLocality() + "%20" + address.getAdminArea();
-                countryName = address.getCountryCode() + "%20" + address.getPostalCode();
+                cityName = address.getLocality() + " " + address.getAdminArea();
+                countryName = address.getCountryCode() + " " + address.getPostalCode();
             }
             //String[] temp = addresses.get(0).getAddressLine(1).split(Pattern.quote(","));
             //cityName = temp[0].replaceAll(Pattern.quote(" "), Pattern.quote("")) + temp[1].replaceAll(Pattern.quote(" "), Pattern.quote(""));
@@ -214,7 +219,7 @@ public class WeatherIntentService extends IntentService {
                             String weather = weatherObject.getString("description");
                             // TODO Save the weather information for the current city.
                             String vivaSay = weather + " at " + temperature
-                                    + " degree Celcius in " + cityName + ". Wind spped is " + windSpeed
+                                    + " degree Celcius in " + cityName + ". Wind speed is " + windSpeed
                                     + " miles per hour.";
                             VivaLibraryPreferenceHelper.saveIrisWeatherInfo(mContext, vivaSay);
                             VivaLibraryPreferenceHelper.setVivaCurrentTemp(mContext, Float.parseFloat(temperature));

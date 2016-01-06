@@ -86,7 +86,13 @@ public class VivaAIManager implements OnAIServiceCallback {
                     VivaVoiceManager.getInstance().speak(context, time);
                     break;
                 case WEATHER:
+                case TEMPERATURE:
                     VivaVoiceManager.getInstance().speak(context, VivaLibraryPreferenceHelper.getIrisWeatherInfo(context));
+                    break;
+                case SMS:
+                case TEXT:
+                case MESSAGE:
+                    VivaVoiceManager.getInstance().speak(context, "Who do you want to send a message to?");
                     break;
                 case DEFAULT:
                     VivaAIService.startActionFetchAIResponse(context, messageToAI, this);

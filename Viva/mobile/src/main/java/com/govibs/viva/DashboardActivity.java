@@ -47,6 +47,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         holoCircularProgressBarBattery = (HoloCircularProgressBar) findViewById(R.id.holoCircularProgressBar);
         holoCircularProgressBarBattery.setOnClickListener(this);
         tvDashboardWeatherInfo = (TextView) findViewById(R.id.tvDashboardWeatherInfo);
+        tvDashboardWeatherInfo.setOnClickListener(this);
         lvDashboardResults = (ListView) findViewById(R.id.lvDashboardResults);
         tvDashboardBatteryPercentage = (TextView) findViewById(R.id.tvDashboardBatteryPercentage);
         ImageButton ibDashboardEmail = (ImageButton) findViewById(R.id.ibDashboardEmail);
@@ -211,8 +212,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
      * Speak the battery status.
      */
     private void speakBatteryStatus() {
+        int batteryPercentage = (int) VivaHandler.getInstance().getBatteryPercentage(DashboardActivity.this);
         String batteryStatus = VivaPreferenceHelper.getCallSign(DashboardActivity.this) + getString(R.string.battery_string_part_1)
-                + " " + VivaHandler.getInstance().getBatteryPercentage(DashboardActivity.this) + " " + getString(R.string.battery_string_part_2);
+                + " " + batteryPercentage + " " + getString(R.string.battery_string_part_2);
         Log.i(Global.TAG, batteryStatus);
         VivaHandler.getInstance().speak(DashboardActivity.this, batteryStatus);
     }

@@ -20,6 +20,13 @@ public enum CommandType {
         }
     },
 
+    TEMPERATURE {
+        @Override
+        public String toString() {
+            return "temperature";
+        }
+    },
+
     TIME {
         @Override
         public String toString() {
@@ -38,6 +45,27 @@ public enum CommandType {
         @Override
         public String toString() {
             return "search";
+        }
+    },
+
+    MESSAGE {
+        @Override
+        public String toString() {
+            return "message";
+        }
+    },
+
+    TEXT {
+        @Override
+        public String toString() {
+            return "text";
+        }
+    },
+
+    SMS {
+        @Override
+        public String toString() {
+            return "sms";
         }
     },
 

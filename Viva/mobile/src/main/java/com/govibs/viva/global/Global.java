@@ -29,7 +29,7 @@ public class Global {
     /**
      * The VIVA locale
      */
-    public static final Locale VIVA_LOCALE = Locale.UK;
+    public static final Locale VIVA_LOCALE = Locale.US;
 
     public static final int GPS_PERMISSION_REQUEST = 123;
 

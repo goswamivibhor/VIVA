@@ -79,8 +79,8 @@ public class VivaHandler implements VivaManagerHandler {
 
     @Override
     public String getWeatherInformation(Context context) {
-        String info = "Temperature: " + VivaLibraryPreferenceHelper.getVivaCurrentTemp(context) + " degree Celcius\n"
-                + "Wind Speed: " + VivaLibraryPreferenceHelper.getVivaCurrentSpeed(context) + "Miles Per Hour\n"
+        String info = "Temperature: " + VivaLibraryPreferenceHelper.getVivaCurrentTemp(context) + " \u2103\n\n"
+                + "Wind: " + VivaLibraryPreferenceHelper.getVivaCurrentSpeed(context) + " Miles Per Hour\n\n"
                 + "Other Info: " + VivaLibraryPreferenceHelper.getVivaCurrentWeatherState(context);
         if (!TextUtils.isEmpty(info)) {
             return info;

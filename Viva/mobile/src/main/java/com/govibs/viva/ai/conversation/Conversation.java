@@ -50,10 +50,18 @@ public class Conversation {
             return CommandType.CALL;
         } else if (command.contains(CommandType.WEATHER.toString())) {
             return CommandType.WEATHER;
+        } else if (command.contains(CommandType.TEMPERATURE.toString())) {
+            return CommandType.TEMPERATURE;
         } else if (command.contains(CommandType.TIME.toString())) {
             return CommandType.TIME;
         } else if (command.contains(CommandType.SEARCH.toString())) {
             return CommandType.SEARCH;
+        } else if (command.contains(CommandType.MESSAGE.toString())) {
+            return CommandType.MESSAGE;
+        } else if (command.contains(CommandType.SMS.toString())) {
+            return CommandType.SMS;
+        } else if (command.contains(CommandType.TEXT.toString())) {
+            return CommandType.TEXT;
         }
         return commandType;
     }
@@ -65,10 +73,16 @@ public class Conversation {
      */
     public static boolean isCommand(String message) {
         boolean status = false;
-        message = message.toLowerCase(Locale.UK);
+        message = message.toLowerCase(Global.VIVA_LOCALE);
         if (message.toLowerCase().contains(CommandType.BATTERY.toString())
-                || message.toLowerCase().contains(CommandType.CALL.toString()) || message.toLowerCase().contains(CommandType.WEATHER.toString())
-                || message.toLowerCase().contains(CommandType.TIME.toString()) || message.toLowerCase().contains(CommandType.SEARCH.toString())) {
+                || message.toLowerCase().contains(CommandType.CALL.toString())
+                || message.toLowerCase().contains(CommandType.WEATHER.toString())
+                || message.toLowerCase().contains(CommandType.TEMPERATURE.toString())
+                || message.toLowerCase().contains(CommandType.TIME.toString())
+                || message.toLowerCase().contains(CommandType.SEARCH.toString())
+                || message.toLowerCase().contains(CommandType.TEXT.toString())
+                || message.toLowerCase().contains(CommandType.MESSAGE.toString())
+                || message.toLowerCase().contains(CommandType.SMS.toString())) {
             status = true;
         }
         return status;
