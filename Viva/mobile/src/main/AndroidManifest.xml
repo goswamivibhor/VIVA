@@ -76,7 +76,12 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".AboutActivity"></activity>
+        <activity android:name=".AboutActivity"
+            android:parentActivityName=".DashboardActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.govibs.viva.DashboardActivity" />
+        </activity>
     </application>
 
 </manifest>

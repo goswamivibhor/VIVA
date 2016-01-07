@@ -20,6 +20,7 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about);
 
         tvSplashScreenLetterV = (TextView) findViewById(R.id.tvSplashScreenLetterV);
+        tvSplashScreenLetterV.setVisibility(View.GONE);
         tvSplashScreenLetterI = (TextView) findViewById(R.id.tvSplashScreenLetterI);
         tvSplashScreenLetterI.setVisibility(View.GONE);
         tvSplashScreenLetterViv = (TextView) findViewById(R.id.tvSplashScreenLetterViv);
@@ -34,6 +35,10 @@ public class AboutActivity extends AppCompatActivity {
         tvSplashScreenDescVirtual.setVisibility(View.GONE);
         tvSplashScreenDescAssistant = (TextView) findViewById(R.id.tvSplashScreenDescAssistant);
         tvSplashScreenDescAssistant.setVisibility(View.GONE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void startVivaAnimation() {
         // V
         rotateV = new RotateAnimation(-90, 0,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,

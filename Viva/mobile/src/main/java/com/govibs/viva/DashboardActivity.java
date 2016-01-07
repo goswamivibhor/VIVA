@@ -76,8 +76,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         }, 2000);
         float batteryPercentage = VivaHandler.getInstance().getBatteryPercentage(DashboardActivity.this);
         if (batteryPercentage > 0) {
-            holoCircularProgressBarBattery.setProgress(batteryPercentage);
-            holoCircularProgressBarBattery.setMarkerProgress(100);
+            holoCircularProgressBarBattery.setProgress(100);
+            holoCircularProgressBarBattery.setMarkerProgress(batteryPercentage);
             holoCircularProgressBarBattery.setMarkerEnabled(true);
             holoCircularProgressBarBattery.setProgressColor(Utils.getColorForBattery(DashboardActivity.this, batteryPercentage));
             String battery = (int) batteryPercentage + "%";
@@ -116,6 +116,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 VivaHandler.getInstance().getWeatherInformationToSpeak(this);
                 break;
             case R.id.ibDashboardEmail:
+                //startAboutActivity();
+                startEmailActivity();
                 break;
             case R.id.ibDashboardSettings:
                 Utils.showDialogWithButton(DashboardActivity.this, getString(R.string.voice_over_option_setup),
@@ -155,6 +157,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                     holoCircularProgressBarBattery.setProgress(
                             VivaHandler.getInstance().getBatteryPercentage(DashboardActivity.this));
                 } else {
+                    VivaPreferenceHelper.setFirstTimeLaunch(DashboardActivity.this, false);
                     VivaHandler.getInstance().speak(DashboardActivity.this, getString(R.string.failed_setup));
                     VivaPreferenceHelper.setSetupComplete(DashboardActivity.this, false);
                 }
@@ -236,5 +239,14 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         Intent intent = new Intent(DashboardActivity.this, SetupActivity.class);
         intent.putExtra(SetupActivity.SETUP_VOICE_OVER, flag);
         startActivityForResult(intent, REQUEST_SETUP);
+    }
+
+    private void startAboutActivity() {
+        Intent intent = new Intent(DashboardActivity.this, AboutActivity.class);
+        startActivity(intent);
+    }
+
+    private void startEmailActivity() {
+
     }
 }
