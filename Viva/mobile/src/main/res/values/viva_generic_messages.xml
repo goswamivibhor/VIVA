@@ -31,6 +31,7 @@
     <string name="notification_app_inbox">Inbox</string>
     <string name="notification_app_talk">Hangouts</string>
     <string name="notification_app_google_apps">Google App</string>
+    <string name="notification_app_whats_app">WhatsApp</string>
     <string name="question_call_recorder">Do you want to record your calls?</string>
     <string-array name="command_list">
         <item>Battery</item>

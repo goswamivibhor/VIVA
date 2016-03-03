@@ -21,11 +21,6 @@ import java.util.regex.Pattern;
  */
 public class VivaLibraryPreferenceHelper {
 
-    /**
-     * Iris startup flag.
-     */
-    private static final String Iris_Startup = "IrisStartup";
-
     private static final String Iris_Weather = "IrisWeather";
 
     private static final String Iris_FirstTimeLaunch = "IrisFirstTimeLaunch";
@@ -46,30 +41,16 @@ public class VivaLibraryPreferenceHelper {
     private static final String VivaCallInProgress = "VivaCallInProgress";
     private static final String VivaCallRecord = "VivaCallRecord";
     private static final String VivaVolume = "VivaVolume";
-    private static final String VivaNotificationTime = "VivaNotificationTime";
+
 
 
     /**
      * Default Preference Helper
      * @param context - the calling application context.
-     * @return
+     * @return Shared Preferences
      */
     private static SharedPreferences getPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
-    }
-
-
-    public static void setIrisStartup(Context context, boolean isIrisStarted) {
-        getPreferences(context).edit().putBoolean(Iris_Startup, isIrisStarted).apply();
-    }
-
-    /**
-     * Is Iris started.
-     * @param context - the calling application context.
-     * @return True if initialized, False otherwise.
-     */
-    public static boolean isIrisStarted(Context context) {
-        return getPreferences(context).getBoolean(Iris_Startup, false);
     }
 
     /**
@@ -284,14 +265,6 @@ public class VivaLibraryPreferenceHelper {
         return getPreferences(context).getInt(VivaVolume, amStreamMusicVol);
     }
 
-    public static void setVivaNotificationTime(Context context, long notificationTime) {
-        getPreferences(context).edit().putLong(VivaNotificationTime, notificationTime).apply();
-        Log.d(Global.TAG, "Notification time: " + Utils.convertCurrentTimeMillsToDisplayTime(notificationTime));
-    }
 
-    public static boolean isInVivaNotificationTimeFrame(Context context, long notificationTime) {
-        long lastNotificationTime = getPreferences(context).getLong(VivaNotificationTime, notificationTime);
-        return  ((notificationTime - lastNotificationTime) <= 3);
-    }
 
 }

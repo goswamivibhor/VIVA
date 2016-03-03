@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -175,6 +176,19 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
             case R.id.radioBtnDefault:
             default:
                 return etSetupName.getEditableText().toString();
+        }
+    }
+
+    private void setRadioGroupCallSign() {
+        String callSign = VivaPreferenceHelper.getCallSign(SetupActivity.this);
+        if (TextUtils.isEmpty(callSign)) {
+            VivaPreferenceHelper.setCallSign(SetupActivity.this, getString(R.string.call_sir));
+        } else if (callSign.equalsIgnoreCase(getString(R.string.call_sir))) {
+            radioGroupCallSign.check(R.id.radioBtnMale);
+        } else if (callSign.equalsIgnoreCase(getString(R.string.call_mam))) {
+            radioGroupCallSign.check(R.id.radioBtnFemale);
+        } else {
+            radioGroupCallSign.check(R.id.radioBtnDefault);
         }
     }
 }

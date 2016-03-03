@@ -43,7 +43,6 @@ public class VivaNotificationListenerService extends NotificationListenerService
         super.onNotificationPosted(sbn);
         Log.i(TAG, "****** Notification Posted");
         Log.i(TAG, "ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
-        VivaLibraryPreferenceHelper.setVivaNotificationTime(getApplicationContext(), System.currentTimeMillis());
         if ((VivaLibraryPreferenceHelper.getVivaNotification(getApplicationContext()) == 0 ||
                 VivaLibraryPreferenceHelper.getVivaNotification(getApplicationContext()) != sbn.getId())
                 && !VivaLibraryPreferenceHelper.isVivaCallInProgress(getApplicationContext())) {

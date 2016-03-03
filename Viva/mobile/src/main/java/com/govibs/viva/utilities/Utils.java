@@ -20,6 +20,7 @@ import android.view.animation.TranslateAnimation;
 import com.govibs.viva.BuildConfig;
 import com.govibs.viva.R;
 import com.govibs.viva.global.Global;
+import com.govibs.viva.storage.VivaPreferenceHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -300,17 +301,19 @@ public class Utils {
      * @return Message to speak.
      */
     public static String getMessageToSpeakForAppName(Context context, String appName, String notificationText) {
-        String msg = context.getString(R.string.notification_received) + appName;
+        String msg = VivaPreferenceHelper.getCallSign(context) + context.getString(R.string.notification_received) + " " + appName;
         try {
             if (appName.equalsIgnoreCase(context.getString(R.string.notification_app_system))
                     || appName.equalsIgnoreCase(context.getString(R.string.notification_app_google_apps))) {
                 if (!TextUtils.isEmpty(notificationText)) {
-                    msg = "Boss, " + notificationText;
+                    msg = VivaPreferenceHelper.getCallSign(context) + ", " + notificationText;
                 }
             } else if (appName.equalsIgnoreCase(context.getString(R.string.notification_app_inbox))) {
-                msg = "Boss, I have got an email.";
+                msg = VivaPreferenceHelper.getCallSign(context) + ", I have got an email.";
             } else if (appName.equalsIgnoreCase(context.getString(R.string.notification_app_talk))) {
-                msg = "Boss, " + notificationText.split(Pattern.quote(":"))[0];
+                msg = VivaPreferenceHelper.getCallSign(context) + ", " + notificationText.split(Pattern.quote(":"))[0];
+            } else if (appName.equalsIgnoreCase(context.getString(R.string.notification_app_whats_app))) {
+                msg = VivaPreferenceHelper.getCallSign(context) + ", I have got a message on " + appName;
             }
         } catch (Exception ex) {
             ex.printStackTrace();

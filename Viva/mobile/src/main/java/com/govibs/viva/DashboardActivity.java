@@ -185,25 +185,31 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
      * This method checks if setup is required.
      */
     private void performSetup() {
-        if (mFloatingActionButton.getTag().equals("Start") &&
-                !VivaPreferenceHelper.isSetupComplete(DashboardActivity.this)) {
-            mFloatingActionButton.setTag("Speak");
-            Utils.showDialogWithButton(DashboardActivity.this, getString(R.string.voice_over_option_setup),
-                    "Okay",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startSetupActivity(true);
-                        }
-                    },
-                    "Nope",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startSetupActivity(false);
-                        }
-                    });
+        if (mFloatingActionButton.getTag() != null) {
+            if (mFloatingActionButton.getTag().equals("Start") &&
+                    !VivaPreferenceHelper.isSetupComplete(DashboardActivity.this)) {
+                mFloatingActionButton.setTag("Speak");
+                Utils.showDialogWithButton(DashboardActivity.this, getString(R.string.voice_over_option_setup),
+                        "Okay",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startSetupActivity(true);
+                            }
+                        },
+                        "Nope",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startSetupActivity(false);
+                            }
+                        });
 
+            } else {
+            /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Speak", null).show();*/
+                listenForRequest(getString(R.string.viva_listening));
+            }
         } else {
             /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Speak", null).show();*/

@@ -44,7 +44,7 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
             int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
             float batteryPct = (level / (float) scale) * 100;
-            Log.i(Global.TAG, "Battery Percentage: " + batteryPct);
+            //Log.i(Global.TAG, "Battery Percentage: " + batteryPct);
             if (batteryPct <= 15) {
                 VivaVoiceManager.getInstance().speak(context, VivaPreferenceHelper.getCallSign(context)
                         + context.getString(R.string.battery_low));
@@ -61,7 +61,7 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
             if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT);
                 String appName = Utils.getApplicationName(context, event);
-                Log.i(Global.TAG, "Notification event received: " + appName);
+                Log.i(Global.TAG, "Notification event received from " + appName);
                 String speak;
                 if (appName.equalsIgnoreCase(context.getString(R.string.unknown))) {
                     speak = VivaPreferenceHelper.getCallSign(context) + context.getString(R.string.notification_received_unknown);
@@ -72,7 +72,7 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
 
             } else if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED);
-                Log.i(Global.TAG, "Notification event removed: " + Utils.getApplicationName(context, event));
+                Log.i(Global.TAG, "Notification event " + Utils.getApplicationName(context, event) + " removed.");
                 //VivaVoiceManager.getInstance().speak(context.getApplicationContext(), context.getString(R.string.notification_removed));
             }
         } else if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
