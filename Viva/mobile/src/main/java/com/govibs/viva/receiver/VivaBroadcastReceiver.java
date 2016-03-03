@@ -14,8 +14,10 @@ import android.util.Log;
 
 import com.govibs.viva.R;
 import com.govibs.viva.global.Global;
+import com.govibs.viva.storage.VivaDBHelper;
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
 import com.govibs.viva.storage.VivaPreferenceHelper;
+import com.govibs.viva.storage.bean.NotificationBean;
 import com.govibs.viva.utilities.Utils;
 import com.govibs.viva.voice.VivaVoiceManager;
 
@@ -61,6 +63,8 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
             if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT);
                 String appName = Utils.getApplicationName(context, event);
+                NotificationBean notificationBean = (NotificationBean) intent.getSerializableExtra(Global.ACTION_ITEM_NOTIFICATION_BEAN);
+                VivaDBHelper.getInstance(context).insertNotification(notificationBean);
                 Log.i(Global.TAG, "Notification event received from " + appName);
                 String speak;
                 if (appName.equalsIgnoreCase(context.getString(R.string.unknown))) {

@@ -13,6 +13,8 @@ import android.util.Log;
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
 import com.govibs.viva.storage.VivaPreferenceHelper;
+import com.govibs.viva.storage.bean.NotificationBean;
+import com.govibs.viva.utilities.Utils;
 
 
 /**
@@ -50,6 +52,8 @@ public class VivaNotificationListenerService extends NotificationListenerService
             Intent i = new  Intent(Global.ACTION_NOTIFICATION_SERVICE);
             i.putExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT, sbn.getPackageName());
             i.putExtra(Global.ACTION_ITEM_NOTIFICATION_TEXT, sbn.getNotification().tickerText);
+            NotificationBean notificationBean = Utils.createNotificationBeanFromStatusBarNotification(getApplicationContext(), sbn);
+            i.putExtra(Global.ACTION_ITEM_NOTIFICATION_BEAN, notificationBean);
             sendBroadcast(i);
         }
     }

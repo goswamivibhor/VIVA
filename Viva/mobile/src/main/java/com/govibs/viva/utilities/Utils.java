@@ -11,6 +11,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
+import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.govibs.viva.BuildConfig;
 import com.govibs.viva.R;
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaPreferenceHelper;
+import com.govibs.viva.storage.bean.NotificationBean;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -320,6 +322,23 @@ public class Utils {
         }
         Log.i(Global.TAG, msg);
         return msg;
+    }
+
+    /**
+     * Create Notification bean object from status bar notification.
+     * @param context - the calling application context.
+     * @param statusBarNotification - the status bar notification.
+     * @return Notification bean object.
+     */
+    public static NotificationBean createNotificationBeanFromStatusBarNotification(Context context, StatusBarNotification statusBarNotification) {
+        NotificationBean notificationBean = new NotificationBean();
+        notificationBean.setNotificationID(statusBarNotification.getId());
+        notificationBean.setNotificationPackage(statusBarNotification.getPackageName());
+        notificationBean.setNotificationApp(getApplicationName(context, statusBarNotification.getPackageName()));
+        if (!TextUtils.isEmpty(statusBarNotification.getNotification().tickerText)) {
+            notificationBean.setNotificationText(statusBarNotification.getNotification().tickerText.toString());
+        }
+        return notificationBean;
     }
 
 }

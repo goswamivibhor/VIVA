@@ -20,6 +20,7 @@ public class Global {
     public static final String ACTION_ITEM_NOTIFICATION_EVENT = "notification_event";
     public static final String ACTION_ITEM_NOTIFICATION_EVENT_REMOVED = "notification_removed";
     public static final String ACTION_ITEM_NOTIFICATION_TEXT = "notification_text";
+    public static final String ACTION_ITEM_NOTIFICATION_BEAN = "notification_bean";
 
     /**
      * Iris Keyword for waking the application or communicating.
