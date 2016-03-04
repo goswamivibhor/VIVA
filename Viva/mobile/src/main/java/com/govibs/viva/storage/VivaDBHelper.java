@@ -47,7 +47,7 @@ public class VivaDBHelper extends SQLiteOpenHelper {
      */
     private static final String SELECT_NOTIFICATION_COUNT = "SELECT "
             + NotificationTable.COLUMN_NOTIFICATION_COUNT + " FROM " + NotificationTable.TABLE_NAME
-            + " WHERE " + NotificationTable.COLUMN_NAME_ID + "='?'";
+            + " WHERE " + NotificationTable.COLUMN_NAME_ID + "=";
 
     /**
      * Select notifications
@@ -188,7 +188,8 @@ public class VivaDBHelper extends SQLiteOpenHelper {
         int count = 0;
         Cursor cursor = null;
         try {
-            cursor = getReadableDatabase().rawQuery(SELECT_NOTIFICATION_COUNT, new String[]{ notificationBean.getNotificationID() + "" });
+            String query = SELECT_NOTIFICATION_COUNT + notificationBean.getNotificationID() + "";
+            cursor = getReadableDatabase().rawQuery(query, null);
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     count = cursor.getInt(cursor.getColumnIndex(NotificationTable.COLUMN_NOTIFICATION_COUNT));

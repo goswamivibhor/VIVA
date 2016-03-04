@@ -81,13 +81,15 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
                 } else if (VivaDBHelper.getInstance(context).getNotificationCount() >= 3) {
                     speak = VivaPreferenceHelper.getCallSign(context) + ", you have multiple notifications.";
                     VivaVoiceManager.getInstance().speak(context.getApplicationContext(), speak);
-                    VivaDBHelper.getInstance(context).deleteNotificationTableData();
+                } else {
+                    speak = Utils.getMessageToSpeakForAppName(context, appName, intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_TEXT));
+                    VivaVoiceManager.getInstance().speak(context.getApplicationContext(), speak);
                 }
-
             } else if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED);
                 Log.i(Global.TAG, "Notification event " + Utils.getApplicationName(context, event) + " removed.");
                 //VivaVoiceManager.getInstance().speak(context.getApplicationContext(), context.getString(R.string.notification_removed));
+                VivaDBHelper.getInstance(context).deleteNotificationTableData();
             }
         } else if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
             try {
