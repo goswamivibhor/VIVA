@@ -42,16 +42,29 @@ public class VivaDBHelper extends SQLiteOpenHelper {
             + ", " + NotificationTable.COLUMN_NAME_APP + " " + COLUMN_TYPE_TEXT + ", "
             + NotificationTable.COLUMN_NOTIFICATION_COUNT + " " + COLUMN_TYPE_INTEGER + ");";
 
+    /**
+     * Select count column
+     */
     private static final String SELECT_NOTIFICATION_COUNT = "SELECT "
             + NotificationTable.COLUMN_NOTIFICATION_COUNT + " FROM " + NotificationTable.TABLE_NAME
             + " WHERE " + NotificationTable.COLUMN_NAME_ID + "='?'";
 
     /**
-     * Delete notification table
+     * Select notifications
+     */
+    private static final String SELECT_NOTIFICATION = "SELECT * FROM " + NotificationTable.TABLE_NAME;
+
+    /**
+     * Select the size of the table
+     */
+    private static final String SELECT_NOTIFICATION_SIZE = "SELECT COUNT(*) FROM " + NotificationTable.TABLE_NAME;
+
+    /**
+     * Drop notification table
      */
     private static final String DROP_NOTIFICATION_TABLE = "DROP TABLE IF EXISTS " + NotificationTable.TABLE_NAME;
 
-
+    private static final String DELETE_NOTIFICATION_TABLE_DATA = "DELETE FROM " + NotificationTable.TABLE_NAME;
 
     /**
      * DB Helper singleton instance class
@@ -78,9 +91,6 @@ public class VivaDBHelper extends SQLiteOpenHelper {
         return mVivaDBHelper;
     }
 
-
-
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_NOTIFICATION_TABLE);
@@ -88,12 +98,70 @@ public class VivaDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if (newVersion > oldVersion) {
+            db.execSQL(DROP_NOTIFICATION_TABLE);
+        }
     }
 
+    /**
+     * Insert notification in the database.
+     * @param notificationBean - the notification bean to be converted.
+     */
     public void insertNotification(NotificationBean notificationBean) {
         ContentValues contentValues = getContentValuesFromNotificationBean(notificationBean);
+        int count = contentValues.getAsInteger(NotificationTable.COLUMN_NOTIFICATION_COUNT) + 1;
+        contentValues.put(NotificationTable.COLUMN_NOTIFICATION_COUNT, count);
         getWritableDatabase().insert(NotificationTable.TABLE_NAME, null, contentValues);
+    }
+
+    /**
+     * Update Notification in the database.
+     * @param notificationBean - the notification bean to be converted.
+     */
+    public void updateNotification(NotificationBean notificationBean) {
+        ContentValues contentValues = getContentValuesFromNotificationBean(notificationBean);
+        int count = contentValues.getAsInteger(NotificationTable.COLUMN_NOTIFICATION_COUNT) + 1;
+        contentValues.put(NotificationTable.COLUMN_NOTIFICATION_COUNT, count);
+        String whereClause = NotificationTable.COLUMN_NAME_ID + "=?";
+        String[] whereArgs = new String[] { notificationBean.getNotificationID() + "" };
+        getWritableDatabase().update(NotificationTable.TABLE_NAME, contentValues, whereClause, whereArgs);
+    }
+
+    /**
+     * Delete the data in the table.
+     */
+    public void deleteNotificationTableData() {
+        getWritableDatabase().rawQuery(DELETE_NOTIFICATION_TABLE_DATA, null);
+    }
+
+    /**
+     * Verify notification object
+     * @param notificationBean - the notification bean to be converted.
+     * @return True if the notification already exists. False otherwise
+     */
+    public boolean verifyNotification(NotificationBean notificationBean) {
+        boolean status = false;
+        Cursor cursor = null;
+        try {
+            cursor = getReadableDatabase().rawQuery(SELECT_NOTIFICATION, null);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    int notificationID = cursor.getInt(cursor.getColumnIndex(NotificationTable.COLUMN_NAME_ID));
+                    if (notificationID == notificationBean.getNotificationID()) {
+                        status = true;
+                        break;
+                    }
+                }
+                cursor.close();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return status;
     }
 
     /**
@@ -107,12 +175,16 @@ public class VivaDBHelper extends SQLiteOpenHelper {
         contentValues.put(NotificationTable.COLUMN_NAME_MESSAGE, notificationBean.getNotificationText());
         contentValues.put(NotificationTable.COLUMN_NAME_APP, notificationBean.getNotificationApp());
         contentValues.put(NotificationTable.COLUMN_NAME_PACKAGE, notificationBean.getNotificationPackage());
-        int count = getNotificationCount(notificationBean) + 1;
-        contentValues.put(NotificationTable.COLUMN_NOTIFICATION_COUNT, count);
+        contentValues.put(NotificationTable.COLUMN_NOTIFICATION_COUNT, getNotificationCount(notificationBean));
         return contentValues;
     }
 
-    private int getNotificationCount(NotificationBean notificationBean) {
+    /**
+     * Get notification count from the table.
+     * @param notificationBean - - the notification bean to be converted.
+     * @return Count
+     */
+    public int getNotificationCount(NotificationBean notificationBean) {
         int count = 0;
         Cursor cursor = null;
         try {
@@ -121,6 +193,30 @@ public class VivaDBHelper extends SQLiteOpenHelper {
                 while (cursor.moveToNext()) {
                     count = cursor.getInt(cursor.getColumnIndex(NotificationTable.COLUMN_NOTIFICATION_COUNT));
                 }
+                cursor.close();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Get the notification count
+     * @return Count of the rows.
+     */
+    public int getNotificationCount() {
+        int count = 0;
+        Cursor cursor = null;
+        try {
+            cursor = getReadableDatabase().rawQuery(SELECT_NOTIFICATION_SIZE, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                count = cursor.getInt(0);
                 cursor.close();
             }
         } catch (Exception ex) {

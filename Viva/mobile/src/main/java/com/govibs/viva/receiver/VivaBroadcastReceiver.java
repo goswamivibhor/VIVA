@@ -64,15 +64,25 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT);
                 String appName = Utils.getApplicationName(context, event);
                 NotificationBean notificationBean = (NotificationBean) intent.getSerializableExtra(Global.ACTION_ITEM_NOTIFICATION_BEAN);
-                VivaDBHelper.getInstance(context).insertNotification(notificationBean);
+                if (VivaDBHelper.getInstance(context).verifyNotification(notificationBean)) {
+                    VivaDBHelper.getInstance(context).updateNotification(notificationBean);
+                } else {
+                    VivaDBHelper.getInstance(context).insertNotification(notificationBean);
+                }
                 Log.i(Global.TAG, "Notification event received from " + appName);
                 String speak;
-                if (appName.equalsIgnoreCase(context.getString(R.string.unknown))) {
-                    speak = VivaPreferenceHelper.getCallSign(context) + context.getString(R.string.notification_received_unknown);
-                } else {
-                    speak = Utils.getMessageToSpeakForAppName(context, appName, intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_TEXT));
+                if (VivaDBHelper.getInstance(context).getNotificationCount(notificationBean) > 2) {
+                    if (appName.equalsIgnoreCase(context.getString(R.string.unknown))) {
+                        speak = VivaPreferenceHelper.getCallSign(context) + context.getString(R.string.notification_received_unknown);
+                    } else {
+                        speak = Utils.getMessageToSpeakForAppName(context, appName, intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_TEXT));
+                    }
+                    VivaVoiceManager.getInstance().speak(context.getApplicationContext(), speak);
+                } else if (VivaDBHelper.getInstance(context).getNotificationCount() >= 3) {
+                    speak = VivaPreferenceHelper.getCallSign(context) + ", you have multiple notifications.";
+                    VivaVoiceManager.getInstance().speak(context.getApplicationContext(), speak);
+                    VivaDBHelper.getInstance(context).deleteNotificationTableData();
                 }
-                VivaVoiceManager.getInstance().speak(context.getApplicationContext(), speak);
 
             } else if (intent.hasExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED)) {
                 String event = intent.getStringExtra(Global.ACTION_ITEM_NOTIFICATION_EVENT_REMOVED);
