@@ -69,6 +69,13 @@ public enum CommandType {
         }
     },
 
+    NAME {
+        @Override
+        public String toString() {
+            return "name";
+        }
+    },
+
     DEFAULT
 
 }

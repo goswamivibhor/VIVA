@@ -62,6 +62,8 @@ public class Conversation {
             return CommandType.SMS;
         } else if (command.contains(CommandType.TEXT.toString())) {
             return CommandType.TEXT;
+        } else if (command.contains(CommandType.NAME.toString())) {
+            return CommandType.NAME;
         }
         return commandType;
     }
@@ -82,7 +84,9 @@ public class Conversation {
                 || message.toLowerCase().contains(CommandType.SEARCH.toString())
                 || message.toLowerCase().contains(CommandType.TEXT.toString())
                 || message.toLowerCase().contains(CommandType.MESSAGE.toString())
-                || message.toLowerCase().contains(CommandType.SMS.toString())) {
+                || message.toLowerCase().contains(CommandType.SMS.toString())
+                || message.toLowerCase().contains("what is your name")
+                || message.toLowerCase().contains("your name")) {
             status = true;
         }
         return status;

@@ -94,6 +94,9 @@ public class VivaAIManager implements OnAIServiceCallback {
                 case MESSAGE:
                     VivaVoiceManager.getInstance().speak(context, "Who do you want to send a message to?");
                     break;
+                case NAME:
+                    VivaVoiceManager.getInstance().speak(context, "My name is VIVA.");
+                    break;
                 case DEFAULT:
                     VivaAIService.startActionFetchAIResponse(context, messageToAI, this);
                     break;
