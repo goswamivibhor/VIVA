@@ -126,6 +126,15 @@
             android:background="@drawable/cogs"
             android:scaleType="fitXY"/>
 
+        <ImageButton
+            android:id="@+id/ibDashboardCamera"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:contentDescription="@string/app_name"
+            android:background="@android:drawable/ic_menu_camera"
+            android:scaleType="fitXY"/>
+
     </LinearLayout>
 
 </RelativeLayout>

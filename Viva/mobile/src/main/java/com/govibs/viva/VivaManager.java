@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -179,5 +180,14 @@ public class VivaManager implements OnAIResponse, LocationListener {
             String temp = intent.getStringExtra("notification_event");
             Log.i(Global.TAG, temp);
         }
+    }
+
+    /**
+     * Get Image details
+     * @param bitmap - the bitmap to be analyzed.
+     * @return Image details.
+     */
+    public String analyzeImageDetails(final Bitmap bitmap) {
+        return VivaAIManager.getInstance().analyzeImageDetails(bitmap);
     }
 }

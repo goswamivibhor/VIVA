@@ -2,7 +2,10 @@ package com.govibs.viva.ai.conversation;
 
 import android.util.Log;
 
+import com.govibs.viva.ai.nlp.api.AlchemyAPI;
 import com.govibs.viva.global.Global;
+
+import org.w3c.dom.Document;
 
 import java.util.Locale;
 
@@ -76,6 +79,7 @@ public class Conversation {
     public static boolean isCommand(String message) {
         boolean status = false;
         message = message.toLowerCase(Global.VIVA_LOCALE);
+
         if (message.toLowerCase().contains(CommandType.BATTERY.toString())
                 || message.toLowerCase().contains(CommandType.CALL.toString())
                 || message.toLowerCase().contains(CommandType.WEATHER.toString())

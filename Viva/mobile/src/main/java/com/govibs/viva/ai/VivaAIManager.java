@@ -2,6 +2,9 @@ package com.govibs.viva.ai;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,12 +13,21 @@ import com.govibs.viva.R;
 import com.govibs.viva.ai.conversation.AIType;
 import com.govibs.viva.ai.conversation.Conversation;
 import com.govibs.viva.ai.handler.OnAIResponse;
+import com.govibs.viva.ai.nlp.api.AlchemyAPI;
+import com.govibs.viva.ai.nlp.api.AlchemyAPI_ImageParams;
 import com.govibs.viva.ai.services.OnAIServiceCallback;
 import com.govibs.viva.ai.services.VivaAIService;
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
 import com.govibs.viva.utilities.Utils;
 import com.govibs.viva.voice.VivaVoiceManager;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * This is the VIVA AI manager which communicates with AI logic.
@@ -35,6 +47,8 @@ public class VivaAIManager implements OnAIServiceCallback {
      * On AI Response callback
      */
     private OnAIResponse mOnAIResponse;
+
+    private AlchemyAPI mAlchemyAPI;
 
     private AIType mAiType;
 
@@ -63,6 +77,11 @@ public class VivaAIManager implements OnAIServiceCallback {
         mOnAIResponse = onAIResponse;
         mAiType = AIType.INITIALIZE;
         VivaAIService.startActionFetchAIResponse(context, "Hi", this);
+        try {
+            mAlchemyAPI = AlchemyAPI.GetInstanceFromString(context.getString(R.string.alchemy_api_key));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -124,6 +143,12 @@ public class VivaAIManager implements OnAIServiceCallback {
         }
     }
 
+    /**
+     * Get Voice recognition intent
+     * @param context - the calling application context.
+     * @param header - the header text.
+     * @return Intent for voice recognition.
+     */
     public Intent getVoiceRecognitionIntent(Context context, String header) {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
@@ -152,4 +177,41 @@ public class VivaAIManager implements OnAIServiceCallback {
 
         return intent;
     }
+
+    /**
+     * Get Image details.
+     * @param bitmap - the bitmap to be analyzed.
+     * @return Details of the image.
+     */
+    public String analyzeImageDetails(final Bitmap bitmap) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        new AsyncTask<Bitmap, Void, String>() {
+            @Override
+            protected String doInBackground(Bitmap... params) {
+                try {
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] imageByteArray = stream.toByteArray();
+
+                    AlchemyAPI_ImageParams imageParams = new AlchemyAPI_ImageParams();
+                    imageParams.setImage(imageByteArray);
+                    imageParams.setImagePostMode(AlchemyAPI_ImageParams.RAW);
+                    Document doc = mAlchemyAPI.ImageGetRankedImageKeywords(imageParams);
+                    Element root = doc.getDocumentElement();
+                    NodeList items = root.getElementsByTagName("text");
+                    for (int i=0;i<items.getLength();i++) {
+                        Node concept = items.item(i);
+                        String astring = concept.getNodeValue();
+                        astring = concept.getChildNodes().item(0).getNodeValue();
+                        stringBuilder.append(astring);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return stringBuilder.toString();
+            }
+        }.execute(bitmap);
+        return stringBuilder.toString();
+    }
+
 }

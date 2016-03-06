@@ -1,5 +1,12 @@
 package com.govibs.viva.global;
 
+import android.net.Uri;
+import android.os.Environment;
+import android.util.Log;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -40,6 +47,11 @@ public class Global {
      * 15 minutes location update.
      */
     public static final long TIME_LOCATION_UPDATE = 15 * 60 * 1000;
+
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    public static final int MEDIA_TYPE_VIDEO = 2;
+
+
 
 
 }

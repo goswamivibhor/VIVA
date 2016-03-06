@@ -2,10 +2,15 @@ package com.govibs.viva;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,12 +27,18 @@ import com.govibs.viva.ui.UIDisplayAdapter;
 import com.govibs.viva.utilities.Utils;
 import com.pascalwelsch.holocircularprogressbar.HoloCircularProgressBar;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private FloatingActionButton mFloatingActionButton;
     private static final int REQUEST_SETUP = 1;
+    private static final int REQUEST_PICK_IMAGE_FROM_GALLERY = 3;
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 4;
+
+
+    private FloatingActionButton mFloatingActionButton;
+
     private TextView tvInfoMessage, tvDashboardWeatherInfo, tvDashboardBatteryPercentage;
     private RelativeLayout rlConfiguredDashboard;
     private HoloCircularProgressBar holoCircularProgressBarBattery;
@@ -56,6 +67,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         ibDashboardSearch.setOnClickListener(this);
         ImageButton ibDashboardSettings = (ImageButton) findViewById(R.id.ibDashboardSettings);
         ibDashboardSettings.setOnClickListener(this);
+        ImageButton ibDashboardCamera = (ImageButton) findViewById(R.id.ibDashboardCamera);
+        ibDashboardCamera.setOnClickListener(this);
 
         boolean functionalityEnabled = getIntent().getBooleanExtra(Global.VIVA_FUNCTIONALITY_ENABLED, true);
         if (!functionalityEnabled) {
@@ -139,6 +152,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             case R.id.ibDashboardWebSearch:
                 listenForRequest("Search for...");
                 break;
+            case R.id.ibDashboardCamera:
+                startImagePickActivity();
+                break;
         }
     }
 
@@ -176,6 +192,19 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                     VivaHandler.getInstance().sayToViva(DashboardActivity.this, arrTextResponses.get(0));
                 } else {
                     VivaHandler.getInstance().speak(DashboardActivity.this, getString(R.string.unable_to_understand));
+                }
+                break;
+            case REQUEST_PICK_IMAGE_FROM_GALLERY:
+            case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    try {
+                        Uri selectedImage = data.getData();
+                        InputStream inputStream = getContentResolver().openInputStream(selectedImage);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        VivaManager.getInstance().analyzeImageDetails(bitmap);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
                 break;
         }
@@ -254,5 +283,34 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
     private void startEmailActivity() {
 
+    }
+
+    /**
+     * Start Image Pick activity.
+     */
+    private void startImagePickActivity() {
+        AlertDialog.Builder mAlertDialogBuild = new AlertDialog.Builder(this);
+        mAlertDialogBuild.setSingleChoiceItems(R.array.dashboard_camera_option, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    Intent intent = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, REQUEST_PICK_IMAGE_FROM_GALLERY);
+                } else {
+                    // create Intent to take a picture and return control to the calling application
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                    Uri fileUri = Utils.getOutputMediaFileUri(Global.MEDIA_TYPE_IMAGE); // create a file to save the image
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+
+                    // start the image capture Intent
+                    startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                }
+                dialog.dismiss();
+            }
+        });
+        mAlertDialogBuild.create().show();
     }
 }
