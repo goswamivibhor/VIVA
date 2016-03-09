@@ -18,4 +18,10 @@ public interface OnAIResponse {
      */
     void onAIResponseReceived(AIType aiType, String response);
 
+    /**
+     * Response received from the NLP API.
+     * @param response - the response from AI server.
+     */
+    void onNLPResponseReceived(String response);
+
 }

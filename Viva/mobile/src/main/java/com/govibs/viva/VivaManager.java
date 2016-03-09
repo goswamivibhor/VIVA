@@ -116,6 +116,11 @@ public class VivaManager implements OnAIResponse, LocationListener {
         }
     }
 
+    @Override
+    public void onNLPResponseReceived(String response) {
+
+    }
+
     /**
      * Message that Iris has to say
      * @param context - the calling application context.
@@ -131,6 +136,7 @@ public class VivaManager implements OnAIResponse, LocationListener {
      * @param messageToSay - the message to speak.
      */
     public void sayToViva(Context context, String messageToSay) {
+        VivaAIManager.getInstance().analyzeText(messageToSay);
         VivaAIManager.getInstance().speakToAI(context, messageToSay);
     }
 

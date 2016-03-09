@@ -12,6 +12,9 @@ import com.govibs.viva.ai.components.ChatterBotType;
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -24,11 +27,11 @@ public class VivaAIService extends IntentService {
 
 
     private static final String ACTION_FETCH_AI_RESPONSE = "com.vg.iriscorelibrary.ai.services.action.FETCH_AI_RESPONSE";
+    private static final String ACTION_FETCH_NLP_RESPONSE = "com.vg.iriscorelibrary.ai.services.action.FETCH_NLP_RESPONSE";
 
     private static final String EXTRA_MESSAGE_TO_AI = "com.vg.iriscorelibrary.ai.services.extra.MESSAGE_TO_AI";
     //private static final String EXTRA_RESPONSE_BACK = "com.vg.iriscorelibrary.ai.services.extra.RESPONSE_BACK";
 
-    private static Context mContext;
     private static OnAIServiceCallback mOnAIServiceCallback;
 
     /**
@@ -38,11 +41,18 @@ public class VivaAIService extends IntentService {
      * @see IntentService
      */
     public static void startActionFetchAIResponse(Context context, String messageToAI, OnAIServiceCallback aiServiceCallback) {
-        mContext = context;
         Intent intent = new Intent(context, VivaAIService.class);
         intent.setAction(ACTION_FETCH_AI_RESPONSE);
         intent.putExtra(EXTRA_MESSAGE_TO_AI, messageToAI);
         //intent.putExtra(EXTRA_RESPONSE_BACK, aiServiceCallback);
+        mOnAIServiceCallback = aiServiceCallback;
+        context.startService(intent);
+    }
+
+    public static void startActionFetchNLPResponse(Context context, String messageToAI, OnAIServiceCallback aiServiceCallback) {
+        Intent intent = new Intent(context, VivaAIService.class);
+        intent.setAction(ACTION_FETCH_NLP_RESPONSE);
+        intent.putExtra(EXTRA_MESSAGE_TO_AI, messageToAI);
         mOnAIServiceCallback = aiServiceCallback;
         context.startService(intent);
     }
@@ -61,6 +71,10 @@ public class VivaAIService extends IntentService {
                 final OnAIServiceCallback onAIServiceCallback = mOnAIServiceCallback;
                         /*(OnAIServiceCallback) intent.getSerializableExtra(EXTRA_RESPONSE_BACK);*/
                 handleFetchAIResponse(messageToAI, onAIServiceCallback);
+            } else if (ACTION_FETCH_NLP_RESPONSE.equals(action)) {
+                final  String messageToAI = intent.getStringExtra(EXTRA_MESSAGE_TO_AI);
+                final OnAIServiceCallback onAIServiceCallback = mOnAIServiceCallback;
+                handleFetchNLPResponse(messageToAI, onAIServiceCallback);
             }
         }
     }
@@ -80,17 +94,30 @@ public class VivaAIService extends IntentService {
             String response = chatterBot.createSession().think(messageToAI);
             if (onAIServiceCallback != null) {
                 if (TextUtils.isEmpty(response)) {
-                    VivaLibraryPreferenceHelper.setIrisAIInitialized(mContext, false);
+                    VivaLibraryPreferenceHelper.setIrisAIInitialized(getApplicationContext(), false);
                     onAIServiceCallback.onAIResponseFailed();
                 } else {
                     Log.i(Global.TAG, "Message from AI: " + messageToAI);
-                    VivaLibraryPreferenceHelper.setIrisAIInitialized(mContext, true);
+                    VivaLibraryPreferenceHelper.setIrisAIInitialized(getApplicationContext(), true);
                     onAIServiceCallback.onAIResponseReceived(response);
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
             onAIServiceCallback.onAIResponseFailed();
+        }
+    }
+
+    private void handleFetchNLPResponse(String messageToAI, OnAIServiceCallback onAIServiceCallback) {
+        Log.i(Global.TAG, "NLP processing... " + messageToAI);
+        try {
+            final StringBuilder stringBuilder = new StringBuilder();
+            Document doc = onAIServiceCallback.getAlchemyAPI().TextGetTextSentiment(messageToAI);
+            Element root = doc.getDocumentElement();
+            stringBuilder.append(root.getElementsByTagName("type").item(0).getChildNodes().item(0).getNodeValue());
+            mOnAIServiceCallback.onNLPResponse(stringBuilder.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

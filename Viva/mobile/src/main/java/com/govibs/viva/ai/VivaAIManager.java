@@ -15,6 +15,7 @@ import com.govibs.viva.ai.conversation.Conversation;
 import com.govibs.viva.ai.handler.OnAIResponse;
 import com.govibs.viva.ai.nlp.api.AlchemyAPI;
 import com.govibs.viva.ai.nlp.api.AlchemyAPI_ImageParams;
+import com.govibs.viva.ai.nlp.api.AlchemyAPI_TextParams;
 import com.govibs.viva.ai.services.OnAIServiceCallback;
 import com.govibs.viva.ai.services.VivaAIService;
 import com.govibs.viva.global.Global;
@@ -143,6 +144,19 @@ public class VivaAIManager implements OnAIServiceCallback {
         }
     }
 
+    @Override
+    public AlchemyAPI getAlchemyAPI() {
+        return mAlchemyAPI;
+    }
+
+    @Override
+    public void onNLPResponse(String nlpResponse) {
+        if (mOnAIResponse != null) {
+            Log.d(Global.TAG, "NLP Response: " + nlpResponse);
+            mOnAIResponse.onNLPResponseReceived(nlpResponse);
+        }
+    }
+
     /**
      * Get Voice recognition intent
      * @param context - the calling application context.
@@ -184,8 +198,9 @@ public class VivaAIManager implements OnAIServiceCallback {
      * @return Details of the image.
      */
     public String analyzeImageDetails(final Bitmap bitmap) {
-        final StringBuilder stringBuilder = new StringBuilder();
         new AsyncTask<Bitmap, Void, String>() {
+            final StringBuilder stringBuilder = new StringBuilder();
+
             @Override
             protected String doInBackground(Bitmap... params) {
                 try {
@@ -211,7 +226,15 @@ public class VivaAIManager implements OnAIServiceCallback {
                 return stringBuilder.toString();
             }
         }.execute(bitmap);
-        return stringBuilder.toString();
+        return "";
+    }
+
+    /**
+     * Analyze text
+     * @param text - the text which needs to be analyzed.
+     */
+    public void analyzeText(final String text) {
+        VivaAIService.startActionFetchNLPResponse(mContext, text, this);
     }
 
 }
