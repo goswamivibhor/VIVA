@@ -9,11 +9,15 @@ import android.util.Log;
 import com.govibs.viva.ai.components.ChatterBot;
 import com.govibs.viva.ai.components.ChatterBotFactory;
 import com.govibs.viva.ai.components.ChatterBotType;
+import com.govibs.viva.ai.nlp.api.AlchemyAPI_Params;
+import com.govibs.viva.ai.nlp.api.AlchemyAPI_TaxonomyParams;
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -114,10 +118,19 @@ public class VivaAIService extends IntentService {
             final StringBuilder stringBuilder = new StringBuilder();
             Document doc = onAIServiceCallback.getAlchemyAPI().TextGetTextSentiment(messageToAI);
             Element root = doc.getDocumentElement();
-            stringBuilder.append(root.getElementsByTagName("type").item(0).getChildNodes().item(0).getNodeValue());
+            String dataContent = root.getElementsByTagName("type").item(0).getChildNodes().item(0).getNodeValue() + "|";
+            stringBuilder.append(dataContent);
+            AlchemyAPI_TaxonomyParams taxonomyParams = new AlchemyAPI_TaxonomyParams();
+            taxonomyParams.setOutputMode(AlchemyAPI_Params.OUTPUT_XML);
+            taxonomyParams.setText(messageToAI);
+            doc = onAIServiceCallback.getAlchemyAPI().TextGetTaxonomy(messageToAI, taxonomyParams);
+            root = doc.getDocumentElement();
+            dataContent = root.getElementsByTagName("label").item(0).getChildNodes().item(0).getNodeValue();
+            stringBuilder.append(dataContent);
             mOnAIServiceCallback.onNLPResponse(stringBuilder.toString());
         } catch (Exception ex) {
             ex.printStackTrace();
+            onAIServiceCallback.onAIResponseFailed();
         }
     }
 
