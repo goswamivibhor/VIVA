@@ -112,6 +112,11 @@ public class VivaAIService extends IntentService {
         }
     }
 
+    /**
+     * Handle Fetch NLP Response
+     * @param messageToAI - the message to the AI chat server.
+     * @param onAIServiceCallback - the AI Service callback.
+     */
     private void handleFetchNLPResponse(String messageToAI, OnAIServiceCallback onAIServiceCallback) {
         Log.i(Global.TAG, "NLP processing... " + messageToAI);
         try {
