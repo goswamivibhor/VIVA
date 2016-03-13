@@ -47,4 +47,6 @@
         <item>Pick from gallery</item>
         <item>Camera</item>
     </string-array>
+    <string name="appwidget_text">VIVA</string>
+    <string name="add_widget">Add widget</string>
 </resources>
