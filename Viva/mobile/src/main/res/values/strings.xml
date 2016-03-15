@@ -8,6 +8,7 @@
     <string name="splash_screen_anim_i">I</string>
     <string name="splash_screen_anim_a">A</string>
     <string name="splash_screen_anim_assistant">ssistant</string>
+    <string name="alchemy_api">Text Analysis by AlchemyAPI<br /><a hrewf="www.alchemyapi.com" /></string>
     <!-- Dashboard -->
     <string name="dashboard_welcome_message">
         "Hi there.. My name is VIVA and I'm your personal digital assistant application.\n"
@@ -47,6 +48,5 @@
         <item>Pick from gallery</item>
         <item>Camera</item>
     </string-array>
-    <string name="appwidget_text">VIVA</string>
     <string name="add_widget">Add widget</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.govibs.viva;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -35,6 +37,15 @@ public class AboutActivity extends AppCompatActivity {
         tvSplashScreenDescVirtual.setVisibility(View.GONE);
         tvSplashScreenDescAssistant = (TextView) findViewById(R.id.tvSplashScreenDescAssistant);
         tvSplashScreenDescAssistant.setVisibility(View.GONE);
+        TextView tvAlchemyAPI = (TextView) findViewById(R.id.tvAlchemyAPI);
+        tvAlchemyAPI.setText(Html.fromHtml(getString(R.string.alchemy_api)));
+        tvAlchemyAPI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                startActivity(Intent.createChooser(intent, "Open in Browser"));
+            }
+        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

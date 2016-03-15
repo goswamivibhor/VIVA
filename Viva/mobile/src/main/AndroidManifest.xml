@@ -92,12 +92,17 @@
         <receiver android:name=".ui.VivaAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.govibs.viva.widget_broadcast_voice_recognition" />
+                <action android:name="com.govibs.viva.widget_broadcast_capture_and_process" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/viva_app_widget_info" />
         </receiver>
+
+        <activity android:name=".WidgetTransparentActivity"
+            android:theme="@style/Base.Theme.AppCompat.Dialog"/>
     </application>
 
 </manifest>

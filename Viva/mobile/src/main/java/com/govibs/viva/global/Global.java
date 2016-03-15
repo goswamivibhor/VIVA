@@ -29,6 +29,9 @@ public class Global {
     public static final String ACTION_ITEM_NOTIFICATION_TEXT = "notification_text";
     public static final String ACTION_ITEM_NOTIFICATION_BEAN = "notification_bean";
 
+    public static final String ACTION_BROADCAST_WIDGET_VOICE_RECOGNITION = "com.govibs.viva.widget_broadcast_voice_recognition";
+    public static final String ACTION_BROADCAST_WIDGET_CAPTURE_AND_PROCESS = "com.govibs.viva.widget_broadcast_capture_and_process";
+
     /**
      * Iris Keyword for waking the application or communicating.
      */

@@ -11,6 +11,7 @@ import com.govibs.viva.ai.components.ChatterBotFactory;
 import com.govibs.viva.ai.components.ChatterBotType;
 import com.govibs.viva.ai.nlp.api.AlchemyAPI_Params;
 import com.govibs.viva.ai.nlp.api.AlchemyAPI_TaxonomyParams;
+import com.govibs.viva.ai.nlp.api.AlchemyAPI_TextParams;
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
 
@@ -132,6 +133,11 @@ public class VivaAIService extends IntentService {
             root = doc.getDocumentElement();
             dataContent = root.getElementsByTagName("label").item(0).getChildNodes().item(0).getNodeValue();
             stringBuilder.append(dataContent);
+
+            /*doc = onAIServiceCallback.getAlchemyAPI().TextGetRankedNamedEntities(messageToAI);
+            root = doc.getDocumentElement();*/
+
+
             mOnAIServiceCallback.onNLPResponse(stringBuilder.toString());
         } catch (Exception ex) {
             ex.printStackTrace();

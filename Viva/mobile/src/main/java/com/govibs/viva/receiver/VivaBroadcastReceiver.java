@@ -13,6 +13,8 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.govibs.viva.R;
+import com.govibs.viva.VivaManager;
+import com.govibs.viva.ai.VivaAIManager;
 import com.govibs.viva.global.Global;
 import com.govibs.viva.storage.VivaDBHelper;
 import com.govibs.viva.storage.VivaLibraryPreferenceHelper;
@@ -118,7 +120,5 @@ public class VivaBroadcastReceiver extends BroadcastReceiver {
                 Log.e(Global.TAG, "Exception in reading sms. " + ex.getMessage());
             }
         }
-
-
     }
 }

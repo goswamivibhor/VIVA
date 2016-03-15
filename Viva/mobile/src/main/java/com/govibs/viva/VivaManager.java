@@ -118,7 +118,7 @@ public class VivaManager implements OnAIResponse, LocationListener {
 
     @Override
     public void onNLPResponseReceived(String response) {
-
+        VivaAIManager.getInstance().speakToAI(mContext, response);
     }
 
     /**

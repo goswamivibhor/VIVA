@@ -10,18 +10,6 @@
     tools:context="com.govibs.viva.AboutActivity"
     android:background="@drawable/glowy_hex">
 
-    <FrameLayout
-        android:id="@+id/flAboutBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/info_bar"/>
-
         <TextView
             android:id="@+id/tvVivaName"
             android:layout_width="match_parent"
@@ -33,17 +21,23 @@
             android:textColor="@android:color/holo_orange_dark"
             android:textStyle="bold"/>
 
-    </FrameLayout>
-
     <TextView
         android:id="@+id/tvVivaInformation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/dashboard_welcome_message"
-        android:layout_below="@+id/flAboutBox"
-        android:textColor="@android:color/holo_orange_dark"
+        android:layout_below="@+id/tvVivaName"
+        android:textColor="@android:color/white"
         android:background="@drawable/weather_panel"
         android:textSize="19sp"/>
+
+    <TextView
+        android:id="@+id/tvAlchemyAPI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/alchemy_api"
+        android:layout_below="@+id/tvVivaInformation"/>
 
     <RelativeLayout
         android:id="@+id/rlAboutAnimation"
