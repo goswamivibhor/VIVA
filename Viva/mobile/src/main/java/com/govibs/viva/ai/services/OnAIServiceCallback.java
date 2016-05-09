@@ -1,6 +1,7 @@
 package com.govibs.viva.ai.services;
 
 import com.govibs.viva.ai.nlp.api.AlchemyAPI;
+import com.govibs.viva.ai.nlp.bean.AI_Response_Viva;
 
 /**
  * Interface class for returning the AI service response.
@@ -8,11 +9,10 @@ import com.govibs.viva.ai.nlp.api.AlchemyAPI;
 public interface OnAIServiceCallback {
 
     /**
-     * AI Response Received
-     * @param messageFromAI - the message from AI server.
+     * AI Response received.
+     * @param aiResponseViva - the response received from AI.
      */
-    void onAIResponseReceived(String messageFromAI);
-
+    void onAIResponse(AI_Response_Viva aiResponseViva);
     /**
      * AI Response failed.
      */
@@ -23,11 +23,5 @@ public interface OnAIServiceCallback {
      * @return AlchemyAPI
      */
     AlchemyAPI getAlchemyAPI();
-
-    /**
-     * NLP response from server.
-     * @param nlpResponse - the NLP response.
-     */
-    void onNLPResponse(String nlpResponse);
 
 }

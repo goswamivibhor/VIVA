@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,7 +14,7 @@ import com.govibs.viva.ai.conversation.Conversation;
 import com.govibs.viva.ai.handler.OnAIResponse;
 import com.govibs.viva.ai.nlp.api.AlchemyAPI;
 import com.govibs.viva.ai.nlp.api.AlchemyAPI_ImageParams;
-import com.govibs.viva.ai.nlp.api.AlchemyAPI_TextParams;
+import com.govibs.viva.ai.nlp.bean.AI_Response_Viva;
 import com.govibs.viva.ai.services.OnAIServiceCallback;
 import com.govibs.viva.ai.services.VivaAIService;
 import com.govibs.viva.global.Global;
@@ -77,7 +76,10 @@ public class VivaAIManager implements OnAIServiceCallback {
         mContext = context;
         mOnAIResponse = onAIResponse;
         mAiType = AIType.INITIALIZE;
-        VivaAIService.startActionFetchAIResponse(context, "Hi", this);
+        AI_Response_Viva aiResponseViva = new AI_Response_Viva();
+        aiResponseViva.setQuestion("Hi");
+        aiResponseViva.setInit(true);
+        VivaAIService.startActionFetchAIResponse(context, aiResponseViva, this);
         try {
             mAlchemyAPI = AlchemyAPI.GetInstanceFromString(context.getString(R.string.alchemy_api_key));
         } catch (Exception ex) {
@@ -93,6 +95,8 @@ public class VivaAIManager implements OnAIServiceCallback {
     public void speakToAI(Context context, String messageToAI) {
         mContext = context;
         mAiType = AIType.DEFAULT;
+        final AI_Response_Viva aiResponseViva = new AI_Response_Viva();
+        aiResponseViva.setQuestion(messageToAI);
         if (Conversation.isCommand(messageToAI)) {
             switch (Conversation.getCommandType(messageToAI)) {
                 case BATTERY:
@@ -118,21 +122,22 @@ public class VivaAIManager implements OnAIServiceCallback {
                     VivaVoiceManager.getInstance().speak(context, "My name is VIVA.");
                     break;
                 case DEFAULT:
-                    VivaAIService.startActionFetchAIResponse(context, messageToAI, this);
+                    VivaAIService.startActionFetchAIResponse(context, aiResponseViva, this);
                     break;
             }
         } else {
             if (!Conversation.matchAffirmativeResponse(messageToAI)) {
-                VivaAIService.startActionFetchAIResponse(context, messageToAI, this);
+                VivaAIService.startActionFetchAIResponse(context, aiResponseViva, this);
             }
         }
     }
 
     @Override
-    public void onAIResponseReceived(String messageFromAI) {
+    public void onAIResponse(AI_Response_Viva aiResponseViva) {
         if (mOnAIResponse != null) {
-            Log.i(Global.TAG, "Response from AI: " + messageFromAI);
-            mOnAIResponse.onAIResponseReceived(mAiType, messageFromAI);
+            Log.i(Global.TAG, "VIVA Response received.");
+
+            mOnAIResponse.onAIResponseReceived(mAiType, aiResponseViva);
         }
     }
 
@@ -140,21 +145,13 @@ public class VivaAIManager implements OnAIServiceCallback {
     public void onAIResponseFailed() {
         if (mOnAIResponse != null) {
             Log.e(Global.TAG, "No Response from AI.");
-            mOnAIResponse.onAIResponseReceived(mAiType, "");
+            mOnAIResponse.onAIResponseReceived(mAiType, new AI_Response_Viva());
         }
     }
 
     @Override
     public AlchemyAPI getAlchemyAPI() {
         return mAlchemyAPI;
-    }
-
-    @Override
-    public void onNLPResponse(String nlpResponse) {
-        if (mOnAIResponse != null) {
-            Log.d(Global.TAG, "NLP Response: " + nlpResponse);
-            mOnAIResponse.onNLPResponseReceived(nlpResponse);
-        }
     }
 
     /**
@@ -234,7 +231,16 @@ public class VivaAIManager implements OnAIServiceCallback {
      * @param text - the text which needs to be analyzed.
      */
     public void analyzeText(final String text) {
-        VivaAIService.startActionFetchNLPResponse(mContext, text, this);
+        AI_Response_Viva ai_response_viva = new AI_Response_Viva();
+        ai_response_viva.setQuestion(text);
+        VivaAIService.startActionFetchNLPResponse(mContext, ai_response_viva, this);
+    }
+
+    private void processAIResponse(AI_Response_Viva aiResponseViva) {
+        if (!TextUtils.isEmpty(aiResponseViva.getConcept())) {
+            // Send a search for the concept.
+
+        }
     }
 
 }

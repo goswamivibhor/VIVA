@@ -19,6 +19,7 @@ import android.util.Log;
 import com.govibs.viva.ai.VivaAIManager;
 import com.govibs.viva.ai.conversation.AIType;
 import com.govibs.viva.ai.handler.OnAIResponse;
+import com.govibs.viva.ai.nlp.bean.AI_Response_Viva;
 import com.govibs.viva.global.Global;
 import com.govibs.viva.handler.VivaManagerHandler;
 import com.govibs.viva.receiver.VivaBroadcastReceiver;
@@ -96,18 +97,18 @@ public class VivaManager implements OnAIResponse, LocationListener {
     }
 
     @Override
-    public void onAIResponseReceived(AIType aiType, String response) {
+    public void onAIResponseReceived(AIType aiType, AI_Response_Viva response) {
         if (aiType != AIType.INITIALIZE) {
             // TODO Tell Iris to say the response.
             if (mIrisManagerHandler != null) {
-                if (!TextUtils.isEmpty(response)) {
+                if (!TextUtils.isEmpty(response.getChatResponse())) {
                     Log.i(Global.TAG, "AI Response: " + response);
-                    mIrisManagerHandler.onVivaResponse(mContext, response);
+                    mIrisManagerHandler.onVivaResponse(mContext, response.getChatResponse());
                 }
             }
         } else {
             if (mIrisManagerHandler != null) {
-                if (!TextUtils.isEmpty(response)) {
+                if (!TextUtils.isEmpty(response.getChatResponse())) {
                     mIrisManagerHandler.onInitialized(mContext);
                 } else {
                     speak(mContext, "I need internet connection to be smart!");
@@ -136,7 +137,7 @@ public class VivaManager implements OnAIResponse, LocationListener {
      * @param messageToSay - the message to speak.
      */
     public void sayToViva(Context context, String messageToSay) {
-        VivaAIManager.getInstance().analyzeText(messageToSay);
+        //VivaAIManager.getInstance().analyzeText(messageToSay);
         VivaAIManager.getInstance().speakToAI(context, messageToSay);
     }
 

@@ -103,6 +103,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         } else {
             tvDashboardWeatherInfo.setText(R.string.weather_info_default_display);
         }
+        testVivaNLP();
     }
 
     @Override
@@ -312,5 +313,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             }
         });
         mAlertDialogBuild.create().show();
+    }
+
+    private void testVivaNLP() {
+        VivaHandler.getInstance().sayToViva(getApplicationContext(), "can you tell me a joke");
     }
 }

@@ -1,6 +1,7 @@
 package com.govibs.viva.ai.handler;
 
 import com.govibs.viva.ai.conversation.AIType;
+import com.govibs.viva.ai.nlp.bean.AI_Response_Viva;
 
 /**
  * <p>
@@ -16,7 +17,7 @@ public interface OnAIResponse {
      * @param aiType - the type of AI request/response
      * @param response - the response from AI server.
      */
-    void onAIResponseReceived(AIType aiType, String response);
+    void onAIResponseReceived(AIType aiType, AI_Response_Viva response);
 
     /**
      * Response received from the NLP API.
