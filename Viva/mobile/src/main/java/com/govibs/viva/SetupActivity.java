@@ -146,6 +146,7 @@ public class SetupActivity extends AppCompatActivity implements View.OnFocusChan
      */
     private void validate() {
         if (etSetupName.getEditableText() != null && etSetupName.getEditableText().length() > 0) {
+            setRadioGroupCallSign();
             VivaPreferenceHelper.setCallSign(SetupActivity.this, getCallSign());
             VivaPreferenceHelper.setMasterName(SetupActivity.this, etSetupName.getEditableText().toString());
             setResult(RESULT_OK);

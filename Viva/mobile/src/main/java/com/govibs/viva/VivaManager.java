@@ -112,6 +112,7 @@ public class VivaManager implements OnAIResponse, LocationListener {
                     mIrisManagerHandler.onInitialized(mContext);
                 } else {
                     speak(mContext, "I need internet connection to be smart!");
+                    mIrisManagerHandler.onInitializationFailed(mContext);
                 }
             }
         }
